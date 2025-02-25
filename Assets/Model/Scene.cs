@@ -1,10 +1,28 @@
 public class Scene : Entity
 {
-    public static Scene inst = new Scene();
+    private static Scene zeroScene;
 
-    public static Scene CreateScene()
+    public static Scene ZeroScene
     {
-        var scene = Entity.Create(typeof(Scene)) as Scene;
+        get
+        {
+            if (zeroScene != null)
+                return zeroScene;
+            zeroScene = World.inst.GetChild<Scene>(0);
+            if (zeroScene == null)
+                zeroScene = World.inst.AddChildWithId<Scene>(0);
+            return zeroScene;
+        }
+    }
+
+    public static Scene CreateScene(long id)
+    {
+        var scene = World.inst.AddChildWithId<Scene>(id);
         return scene;
+    }
+
+    public static Scene GetScene(long id)
+    {
+        return World.inst.GetChild<Scene>(id);
     }
 }

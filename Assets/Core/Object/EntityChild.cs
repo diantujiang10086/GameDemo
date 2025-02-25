@@ -26,6 +26,20 @@ public partial class Entity
             this.parent?.AddToChildren(this);
         }
     }
+
+    public T GetParent<T>() where T : Entity
+    {
+        return this.parent as T;
+    }
+
+    public T GetChild<T>(long id) where T : Entity
+    {
+        if (this.children == null)
+            return default;
+        this.children.TryGetValue(id, out var child);
+        return child as T;
+    }
+
     public Entity AddChild(Entity entity)
     {
         entity.Parent = this;
@@ -36,7 +50,7 @@ public partial class Entity
     {
         Type type = typeof(T);
         var component = Entity.Create(type) as T;
-        component.Id = IdGeneraterSystem.GenerateId();
+        component.Id = IdGenerater.GenerateId();
         component.Parent = this;
         AwakeSystem.Awake(component);
         return component;
@@ -45,7 +59,7 @@ public partial class Entity
     {
         Type type = typeof(T);
         var component = Entity.Create(type) as T;
-        component.Id = IdGeneraterSystem.GenerateId();
+        component.Id = IdGenerater.GenerateId();
         component.Parent = this;
         AwakeSystem.Awake(component, a);
         return component;
@@ -54,7 +68,7 @@ public partial class Entity
     {
         Type type = typeof(T);
         var component = Entity.Create(type) as T;
-        component.Id = IdGeneraterSystem.GenerateId();
+        component.Id = IdGenerater.GenerateId();
         component.Parent = this;
         AwakeSystem.Awake(component, a, b);
         return component;
@@ -63,7 +77,7 @@ public partial class Entity
     {
         Type type = typeof(T);
         var component = Entity.Create(type) as T;
-        component.Id = IdGeneraterSystem.GenerateId();
+        component.Id = IdGenerater.GenerateId();
         component.Parent = this;
         AwakeSystem.Awake(component, a, b, c);
         return component;

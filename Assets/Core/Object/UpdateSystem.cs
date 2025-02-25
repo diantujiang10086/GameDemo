@@ -1,19 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public interface IUpdate
-{
-    void Update();
-}
-public interface IFixedUpdate
-{
-    void FixedUpdate();
-}
-public interface ILateUpdate
-{
-    void LateUpdate();
-}
-public class UpdateSystem : ISystem, IAwake
+public class UpdateSystem 
 {
     private const int fixedUpdate = 0;
     private const int update = 1;
@@ -23,16 +11,22 @@ public class UpdateSystem : ISystem, IAwake
     private static UpdateSystem instance;
     private Queue<Entity>[] queues;
 
-    public void Awake()
+    public static UpdateSystem inst => instance;
+
+    public static void Initialize()
     {
-        instance = this;
-        queues = new Queue<Entity>[max];
-        queues[fixedUpdate] = new Queue<Entity>();
-        queues[update] = new Queue<Entity>();
-        queues[lateUpdate] = new Queue<Entity>();
+        instance = new UpdateSystem();
+        instance.queues = new Queue<Entity>[max];
+        instance.queues[fixedUpdate] = new Queue<Entity>();
+        instance.queues[update] = new Queue<Entity>();
+        instance.queues[lateUpdate] = new Queue<Entity>();
     }
-    public void AddSystem(Entity entity)
+
+    public void AddUpdate(Entity entity)
     {
+        if (entity == null)
+            return;
+
         if (entity is IFixedUpdate)
             queues[fixedUpdate].Enqueue(entity);
 

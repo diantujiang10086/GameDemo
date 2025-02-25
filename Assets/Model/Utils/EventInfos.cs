@@ -9,18 +9,22 @@ public struct CreateActorInfo
     public int actorId;
 }
 
-public struct UpdateAcotrPosition
+public struct UpdateActorPosition
 {
     public int actorId;
     public Vector3 value;
 }
-public struct UpdateAcotrRotation
+public struct UpdateActorRotation
 {
     public int actorId;
     public Quaternion value;
 }
-public struct UpdateAcotrScale
+public struct UpdateActorScale
 {
     public int actorId;
     public Vector3 value;
+}
+public struct ActorMoveInfo
+{
+    public Vector2 value;
 }

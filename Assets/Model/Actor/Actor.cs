@@ -4,10 +4,11 @@ public class Actor : Entity
 {
     private int actorDisplayId;
     private int actorId;
+    private float moveSpeed;
+    private float rotationSpeed;
     private Vector3 position = Vector3.zero;
     private Quaternion rotation = Quaternion.identity;
     private Vector3 localScale = Vector3.one;
-
     public string model { get; private set; }
 
     public int ActorId
@@ -19,15 +20,25 @@ public class Actor : Entity
         }
     }
 
+    public float MoveSpeed
+    {
+        get => moveSpeed;
+    }
+
+    public float RotationSpeed
+    {
+        get => rotationSpeed;
+    }
+
     public Vector3 Position
     {
         get => position;
         set
         {
             position = value;
-            var data = default(UpdateAcotrPosition);
+            var data = default(UpdateActorPosition);
             data.actorId = actorId;
-            GameEventSystem.Publish(data);
+            ActorEventSystem.Publish(data);
         }
     }
 
@@ -37,9 +48,9 @@ public class Actor : Entity
         set
         {
             rotation = value;
-            var data = default(UpdateAcotrRotation);
+            var data = default(UpdateActorRotation);
             data.actorId = actorId;
-            GameEventSystem.Publish(data);
+            ActorEventSystem.Publish(data);
         }
     }
 
@@ -49,9 +60,9 @@ public class Actor : Entity
         set
         {
             localScale = value;
-            var data = default(UpdateAcotrScale);
+            var data = default(UpdateActorScale);
             data.actorId = actorId;
-            GameEventSystem.Publish(data);
+            ActorEventSystem.Publish(data);
         }
     }
 
@@ -64,6 +75,9 @@ public class Actor : Entity
     public void Initialize(int actorId, string config)
     {
         this.actorId = actorId;
-        model = "Cube";
+        //test
+        model = "Actor";
+        moveSpeed = 10f;
+        rotationSpeed = 10f;
     }
 }

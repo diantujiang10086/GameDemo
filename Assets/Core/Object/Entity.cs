@@ -53,8 +53,9 @@ public partial class Entity : IDisposable
     protected static Entity Create(Type type)
     {
         Entity component = Activator.CreateInstance(type) as Entity;
-        component.InstanceId = IdGeneraterSystem.GenerateId();
-        SystemManager.GetSystem<UpdateSystem>().AddSystem(component);
+        component.InstanceId = IdGenerater.GenerateId();
+        UpdateSystem.inst.AddUpdate(component);
         return component;
     }
+
 }

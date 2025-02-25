@@ -4,17 +4,16 @@ public class GameModel
 {
     public static void Initialize()
     {
-        var systemManager = new SystemManager();
-        SystemManager.AddSystem<IdGeneraterSystem>();
-        SystemManager.AddSystem<UpdateSystem>();
-        SystemManager.AddSystem<ResourceManagerSystem>();
-        SystemManager.AddSystem<ActorManagerSystem>();
-        var gameEventSystem = SystemManager.AddSystem<GameEventSystem>();
-        gameEventSystem.AddAssembly(typeof(GameModel).Assembly);
+        IdGenerater.Initialize();
+        UpdateSystem.Initialize();
+        World.inst.AddComponent<ResourceManagerSystem>();
+        World.inst.AddComponent<ActorManagerSystem>();
+        World.inst.AddComponent<ControlActor>();
+        GameEventSystem.inst.AddAssembly(typeof(GameModel).Assembly);
+        ActorEventSystem.inst.AddAssembly(typeof(GameModel).Assembly);
     }
     public static void Run()
     {
-        var scene = Scene.CreateScene();
         GameEventSystem.Publish(default(GameStartInfo));
     }
     public static void FixedUpdate()

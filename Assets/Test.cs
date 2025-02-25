@@ -4,7 +4,7 @@ public class Test : MonoBehaviour
 {
     private void Awake()
     {
-        new IdGeneraterSystem();
+        new IdGenerater();
         var gameEventSystem =  new GameEventSystem();
         gameEventSystem.AddAssembly(typeof(Test).Assembly);
 

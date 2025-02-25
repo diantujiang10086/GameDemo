@@ -1,6 +1,6 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
-public class ViewResourceManagerSystem : ISystem, IAwake
+public class ViewResourceManagerSystem : Entity, IAwake
 {
     public void Awake()
     {

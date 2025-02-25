@@ -1,23 +1,19 @@
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-public interface IEvent
-{
-    Type Type { get; }
 
-}
-
-public abstract class AEvent<A> : IEvent
+public abstract class ActorEvent<A> : IEvent
 {
     public Type Type => typeof(A);
 
-    protected abstract void Run(A a);
+    protected abstract void Run(Actor actor, A a);
 
-    public void Handle(A a)
+    public void Handle(Actor actor, A a)
     {
         try
         {
-            Run(a);
+            Run(actor, a);
         }
         catch (Exception e)
         {
@@ -26,10 +22,11 @@ public abstract class AEvent<A> : IEvent
     }
 }
 
-public class GameEventSystem 
+public class ActorEventSystem
 {
-    private static GameEventSystem instance;
-    public static GameEventSystem inst => instance ??= new GameEventSystem();
+    private static ActorEventSystem instance;
+    public static ActorEventSystem inst => instance ??= new ActorEventSystem();
+
     private List<Assembly> assemblies = new List<Assembly>();
     private Dictionary<Type, IEvent> allEvents = new Dictionary<Type, IEvent>();
 
@@ -50,14 +47,24 @@ public class GameEventSystem
         }
     }
 
-    public static void Publish<T>(T a) where T : struct
+    public static void Publish<T>(T a, int actorId = -1) where T : struct
     {
         if (!inst.allEvents.TryGetValue(typeof(T), out var _event))
             return;
 
-        if (_event is AEvent<T> aEvent)
+        if (_event is ActorEvent<T> aEvent)
         {
-            aEvent.Handle(a);
+            Actor actor = default;
+            if (actorId == -1)
+            {
+                var controlActor = World.inst.GetComponent<ControlActor>();
+                actorId = controlActor.actorId;
+            }
+            var actorManager = World.inst.GetComponent<ActorManagerSystem>();
+            actor = actorManager.GetActor(actorId);
+            if (actor == null)
+                return;
+            aEvent.Handle(actor, a);
         }
     }
 }

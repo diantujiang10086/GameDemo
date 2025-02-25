@@ -9,7 +9,7 @@ public class GameObjectPool
     public GameObjectPool(string path)
     {
         this.modelPath = path;
-        resourceManagerSystem = SystemManager.GetSystem<ViewResourceManagerSystem>();
+        resourceManagerSystem = World.inst.GetComponent<ViewResourceManagerSystem>();
         pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease);
     }
 

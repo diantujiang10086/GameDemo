@@ -30,6 +30,20 @@ public partial class Entity
         }
     }
 
+
+    public T GetComponent<T>() where T : Entity
+    {
+        return GetComponent(typeof(T)) as T;
+    }
+
+    public Entity GetComponent(Type type)
+    {
+        if (this.components == null)
+            return default;
+        this.components.TryGetValue(type, out var component);
+        return component;
+    }
+
     public Entity AddComponent(Type type)
     {
         var component = Create(type);
@@ -39,7 +53,7 @@ public partial class Entity
         return component;
     }
 
-    public K AddComponentWithId<K>(long id) where K : Entity, IAwake, new()
+    public K AddComponentWithId<K>(long id) where K : Entity, new()
     {
         Type type = typeof(K);
         if (this.components != null && this.components.TryGetValue(type, out var component))
@@ -53,7 +67,7 @@ public partial class Entity
         AwakeSystem.Awake(component);
         return component as K;
     }
-    public K AddComponentWithId<K, P1>(long id, P1 p1) where K : Entity, IAwake<P1>, new()
+    public K AddComponentWithId<K, P1>(long id, P1 p1) where K : Entity, new()
     {
         Type type = typeof(K);
         if (this.components != null && this.components.TryGetValue(type, out var component))
@@ -67,7 +81,7 @@ public partial class Entity
         AwakeSystem.Awake(component, p1);
         return component as K;
     }
-    public K AddComponentWithId<K, P1, P2>(long id, P1 p1, P2 p2) where K : Entity, IAwake<P1, P2>, new()
+    public K AddComponentWithId<K, P1, P2>(long id, P1 p1, P2 p2) where K : Entity, new()
     {
         Type type = typeof(K);
         if (this.components != null && this.components.TryGetValue(type, out var component))
@@ -81,7 +95,7 @@ public partial class Entity
         AwakeSystem.Awake(component, p1, p2);
         return component as K;
     }
-    public K AddComponentWithId<K, P1, P2, P3>(long id, P1 p1, P2 p2, P3 p3) where K : Entity, IAwake<P1, P2, P3>, new()
+    public K AddComponentWithId<K, P1, P2, P3>(long id, P1 p1, P2 p2, P3 p3) where K : Entity, new()
     {
         Type type = typeof(K);
         if (this.components != null && this.components.TryGetValue(type, out var component))
@@ -96,19 +110,19 @@ public partial class Entity
         return component as K;
     }
 
-    public K AddComponent<K>() where K : Entity, IAwake, new()
+    public K AddComponent<K>() where K : Entity, new()
     {
         return this.AddComponentWithId<K>(this.Id);
     }
-    public K AddComponent<K, P1>(P1 p1) where K : Entity, IAwake<P1>, new()
+    public K AddComponent<K, P1>(P1 p1) where K : Entity, new()
     {
         return this.AddComponentWithId<K, P1>(this.Id, p1);
     }
-    public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Entity, IAwake<P1, P2>, new()
+    public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Entity, new()
     {
         return this.AddComponentWithId<K, P1, P2>(this.Id, p1, p2);
     }
-    public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Entity, IAwake<P1, P2, P3>, new()
+    public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Entity, new()
     {
         return this.AddComponentWithId<K, P1, P2, P3>(this.Id, p1, p2, p3);
     }

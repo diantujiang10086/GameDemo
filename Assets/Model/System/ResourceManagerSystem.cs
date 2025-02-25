@@ -1,4 +1,4 @@
-public class ResourceManagerSystem : ISystem, IAwake
+public class ResourceManagerSystem : Entity, IAwake
 {
     public void Awake()
     {

@@ -5,7 +5,7 @@ public class BehaviourManager : MonoBehaviour
     UpdateSystem updateSystem;
     private void Awake()
     {
-        updateSystem = SystemManager.GetSystem<UpdateSystem>();
+        updateSystem = UpdateSystem.inst;
     }
 
     private void FixedUpdate()

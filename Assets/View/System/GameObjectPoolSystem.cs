@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GameObjectPoolSystem : ISystem
+public class GameObjectPoolSystem : Entity
 {
     private Dictionary<string, GameObjectPool> dict = new Dictionary<string, GameObjectPool>();
     
