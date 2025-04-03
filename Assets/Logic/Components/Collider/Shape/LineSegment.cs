@@ -4,6 +4,7 @@ using UnityEngine;
 public class LineSegment : IShape
 {
     public float2 Start, End;
+    public LineSegment() { }
     public LineSegment(float2 start, float2 end) { Start = start; End = end; }
 
     public void ComputeAABB(ref AABB aabb, Unit unit)
@@ -27,11 +28,6 @@ public class LineSegment : IShape
 
         aabb.Min = min;
         aabb.Max = max;
-    }
-
-    public AABB GetBounds()
-    {
-        return new AABB(math.min(Start, End), math.max(Start, End));
     }
 
     public bool TestOverlap(float2 point) => CollisionUtils.PointToLineSegment(point, this);

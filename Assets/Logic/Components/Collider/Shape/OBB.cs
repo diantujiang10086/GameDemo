@@ -6,7 +6,7 @@ public class OBB : IShape
     public float2 Center;
     public float2 Size;
     public float Rotation;
-
+    public OBB() { }
     public OBB(float2 center, float2 size, float rotation)
     {
         Center = center;
@@ -35,7 +35,7 @@ public class OBB : IShape
 
         foreach (var corner in localCorners)
         {
-            float2 rotatedCorner = Helper.RotateVector(corner, Rotation);
+            float2 rotatedCorner = ColliderHelper.RotateVector(corner, Rotation);
             var center = Center + rotatedCorner;
             float2 worldCorner = worldPosition + new float2(center.x, center.y);
             min = math.min(min, worldCorner);
@@ -48,27 +48,7 @@ public class OBB : IShape
     public float2 GetAxis(int index)
     {
         float2 axis = index == 0 ? new float2(1, 0) : new float2(0, 1);
-        return Helper.RotateVector(axis, Rotation);
-    }
-
-    public AABB GetBounds()
-    {
-        float2 halfSize = Size / 2;
-        float2[] corners = new float2[4]
-        {
-            Center + Helper.RotateVector(new float2(-halfSize.x, -halfSize.y), Rotation),
-            Center + Helper.RotateVector(new float2(halfSize.x, -halfSize.y), Rotation),
-            Center + Helper.RotateVector(new float2(-halfSize.x, halfSize.y), Rotation),
-            Center + Helper.RotateVector(new float2(halfSize.x, halfSize.y), Rotation)
-        };
-
-        float2 min = corners[0], max = corners[0];
-        foreach (var c in corners)
-        {
-            min = math.min(min, c);
-            max = math.max(max, c);
-        }
-        return new AABB(min, max);
+        return ColliderHelper.RotateVector(axis, Rotation);
     }
 
     public float GetHalfLength(int index) => Size[index] / 2;

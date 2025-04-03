@@ -18,11 +18,6 @@ public class Circle : IShape
         aabb.Max = max;
     }
 
-    public AABB GetBounds()
-    {
-        return new AABB(Center - new float2(Radius, Radius), Center + new float2(Radius, Radius));
-    }
-
     public bool TestOverlap(float2 point) => CollisionUtils.PointToCircle(point, this);
 
     public bool TestOverlap(IShape shape) => shape switch

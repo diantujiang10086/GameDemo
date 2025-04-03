@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-public class Helper
+public class ColliderHelper
 {
     public static float2 RotateVector(float2 v, float angle)
     {

@@ -11,11 +11,11 @@ public static partial class CollisionUtils
 
         if (PointToSector(b.Center, a)) return true;
 
-        float2 aLeft = Helper.RotateVector(a.Direction, -a.Angle / 2);
-        float2 aRight = Helper.RotateVector(a.Direction, a.Angle / 2);
+        float2 aLeft = ColliderHelper.RotateVector(a.Direction, -a.Angle / 2);
+        float2 aRight = ColliderHelper.RotateVector(a.Direction, a.Angle / 2);
 
-        float2 bLeft = Helper.RotateVector(b.Direction, -b.Angle / 2);
-        float2 bRight = Helper.RotateVector(b.Direction, b.Angle / 2);
+        float2 bLeft = ColliderHelper.RotateVector(b.Direction, -b.Angle / 2);
+        float2 bRight = ColliderHelper.RotateVector(b.Direction, b.Angle / 2);
 
         LineSegment aEdge1 = new LineSegment(a.Center, a.Center + aLeft * a.Radius);
         LineSegment aEdge2 = new LineSegment(a.Center, a.Center + aRight * a.Radius);
@@ -34,8 +34,8 @@ public static partial class CollisionUtils
         if (PointToSector(line.Start, sector) || PointToSector(line.End, sector))
             return true;
 
-        float2 leftBound = Helper.RotateVector(sector.Direction, -sector.Angle / 2);
-        float2 rightBound = Helper.RotateVector(sector.Direction, sector.Angle / 2);
+        float2 leftBound = ColliderHelper.RotateVector(sector.Direction, -sector.Angle / 2);
+        float2 rightBound = ColliderHelper.RotateVector(sector.Direction, sector.Angle / 2);
 
         LineSegment radius1 = new LineSegment(sector.Center, sector.Center + leftBound * sector.Radius);
         LineSegment radius2 = new LineSegment(sector.Center, sector.Center + rightBound * sector.Radius);
@@ -53,9 +53,9 @@ public static partial class CollisionUtils
                 float sectorStartAngle = math.atan2(sector.Direction.y, sector.Direction.x) - sector.Angle / 2;
                 float sectorEndAngle = sectorStartAngle + sector.Angle;
 
-                angle = Helper.NormalizeAngle(angle);
-                sectorStartAngle = Helper.NormalizeAngle(sectorStartAngle);
-                sectorEndAngle = Helper.NormalizeAngle(sectorEndAngle);
+                angle = ColliderHelper.NormalizeAngle(angle);
+                sectorStartAngle = ColliderHelper.NormalizeAngle(sectorStartAngle);
+                sectorEndAngle = ColliderHelper.NormalizeAngle(sectorEndAngle);
 
                 if (sectorStartAngle <= sectorEndAngle)
                 {

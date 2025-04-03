@@ -49,8 +49,8 @@ public static partial class CollisionUtils
         if (centerDistSq <= circle.Radius * circle.Radius)
             return true;
 
-        float2 leftBound = Helper.RotateVector(sector.Direction, -sector.Angle / 2);
-        float2 rightBound = Helper.RotateVector(sector.Direction, sector.Angle / 2);
+        float2 leftBound = ColliderHelper.RotateVector(sector.Direction, -sector.Angle / 2);
+        float2 rightBound = ColliderHelper.RotateVector(sector.Direction, sector.Angle / 2);
 
         if (CircleToLineSegment(circle,
         new LineSegment(sector.Center, sector.Center + leftBound * sector.Radius)) ||
@@ -69,9 +69,9 @@ public static partial class CollisionUtils
             float sectorStartAngle = math.atan2(sector.Direction.y, sector.Direction.x) - sector.Angle / 2;
             float sectorEndAngle = sectorStartAngle + sector.Angle;
 
-            angleToCircle = Helper.NormalizeAngle(angleToCircle);
-            sectorStartAngle = Helper.NormalizeAngle(sectorStartAngle);
-            sectorEndAngle = Helper.NormalizeAngle(sectorEndAngle);
+            angleToCircle = ColliderHelper.NormalizeAngle(angleToCircle);
+            sectorStartAngle = ColliderHelper.NormalizeAngle(sectorStartAngle);
+            sectorEndAngle = ColliderHelper.NormalizeAngle(sectorEndAngle);
 
             if (sectorStartAngle <= sectorEndAngle)
             {
@@ -84,8 +84,8 @@ public static partial class CollisionUtils
                     return true;
             }
 
-            float angleDiff1 = math.abs(Helper.NormalizeAngle(angleToCircle - sectorStartAngle));
-            float angleDiff2 = math.abs(Helper.NormalizeAngle(angleToCircle - sectorEndAngle));
+            float angleDiff1 = math.abs(ColliderHelper.NormalizeAngle(angleToCircle - sectorStartAngle));
+            float angleDiff2 = math.abs(ColliderHelper.NormalizeAngle(angleToCircle - sectorEndAngle));
             if (math.min(angleDiff1, angleDiff2) <= math.asin(circle.Radius / math.length(circleToSector)))
                 return true;
         }

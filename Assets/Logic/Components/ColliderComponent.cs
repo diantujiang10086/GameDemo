@@ -5,7 +5,6 @@ public class ColliderComponent : Entity, IAwake<IShape>
 {
     private Unit unit;
     private IShape shape;
-    private float radius;
     private int layer;
     private int colliderLayer;
     private bool isCheckCollider = false;
@@ -13,7 +12,6 @@ public class ColliderComponent : Entity, IAwake<IShape>
     private GridManager.GridKey gridKey;
 
     public int Layer => layer;
-    public float Radius=> radius;
     public bool IsCheckCollider => isCheckCollider;
     public GridManager.GridKey GridKey => gridKey;
     public Unit GetUnit() => unit;
@@ -25,9 +23,7 @@ public class ColliderComponent : Entity, IAwake<IShape>
     public void Awake(IShape shape)
     {
         this.shape = shape;
-        var size = shape.GetBounds().Size;
         aabb = new AABB();
-        radius = math.max(size.x, size.y);
         unit = GetParent<Unit>();
         GridManager.Instance.Add(unit.InstanceId, unit.Position);
         PhysicsWorld.Instance.AddCollider(this);

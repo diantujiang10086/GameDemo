@@ -11,11 +11,6 @@ public class AABB : IShape
     public AABB() { }
     public AABB(float2 min, float2 max) { Min = min; Max = max; }
 
-    public AABB GetBounds()
-    {
-        return this;
-    }
-
     public bool TestOverlap(float2 point) => CollisionUtils.PointToAABB(point, this);
 
     public bool TestOverlap(IShape shape)=> shape switch

@@ -27,8 +27,8 @@ public static partial class CollisionUtils
         if (PointToOBB(sector.Center, obb)) return true;
 
         // 2. 检查扇形边界是否与OBB相交
-        float2 leftBound = Helper.RotateVector(sector.Direction, -sector.Angle / 2) * sector.Radius;
-        float2 rightBound = Helper.RotateVector(sector.Direction, sector.Angle / 2) * sector.Radius;
+        float2 leftBound = ColliderHelper.RotateVector(sector.Direction, -sector.Angle / 2) * sector.Radius;
+        float2 rightBound = ColliderHelper.RotateVector(sector.Direction, sector.Angle / 2) * sector.Radius;
 
         LineSegment sectorEdge1 = new LineSegment(sector.Center, sector.Center + leftBound);
         LineSegment sectorEdge2 = new LineSegment(sector.Center, sector.Center + rightBound);
@@ -55,8 +55,8 @@ public static partial class CollisionUtils
         float2 localEnd = line.End - obb.Center;
 
         // 反旋转
-        localStart = Helper.RotateVector(localStart, -obb.Rotation);
-        localEnd = Helper.RotateVector(localEnd, -obb.Rotation);
+        localStart = ColliderHelper.RotateVector(localStart, -obb.Rotation);
+        localEnd = ColliderHelper.RotateVector(localEnd, -obb.Rotation);
 
         // 现在处理为AABB与线段的碰撞
         AABB localAABB = new AABB(
@@ -73,10 +73,10 @@ public static partial class CollisionUtils
         float2 halfSize = obb.Size / 2;
         float2[] corners = new float2[4];
 
-        corners[0] = obb.Center + Helper.RotateVector(new float2(halfSize.x, halfSize.y), obb.Rotation);
-        corners[1] = obb.Center + Helper.RotateVector(new float2(-halfSize.x, halfSize.y), obb.Rotation);
-        corners[2] = obb.Center + Helper.RotateVector(new float2(-halfSize.x, -halfSize.y), obb.Rotation);
-        corners[3] = obb.Center + Helper.RotateVector(new float2(halfSize.x, -halfSize.y), obb.Rotation);
+        corners[0] = obb.Center + ColliderHelper.RotateVector(new float2(halfSize.x, halfSize.y), obb.Rotation);
+        corners[1] = obb.Center + ColliderHelper.RotateVector(new float2(-halfSize.x, halfSize.y), obb.Rotation);
+        corners[2] = obb.Center + ColliderHelper.RotateVector(new float2(-halfSize.x, -halfSize.y), obb.Rotation);
+        corners[3] = obb.Center + ColliderHelper.RotateVector(new float2(halfSize.x, -halfSize.y), obb.Rotation);
 
         return corners;
     }

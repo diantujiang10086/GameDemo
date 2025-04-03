@@ -7,7 +7,7 @@ public class Sector : IShape
     public float2 Direction;
     public float Radius;
     public float Angle;
-
+    public Sector() { }
     public Sector(float2 center, float2 direction, float radius, float angle)
     {
         Center = center;
@@ -21,8 +21,8 @@ public class Sector : IShape
         float2 worldPosition = new float2(unit.Position.x, unit.Position.z);
         float2 worldCenter = worldPosition + Center;
 
-        float2 leftDir = Helper.RotateVector(Direction, -Angle / 2) * Radius;
-        float2 rightDir = Helper.RotateVector(Direction, Angle / 2) * Radius;
+        float2 leftDir = ColliderHelper.RotateVector(Direction, -Angle / 2) * Radius;
+        float2 rightDir = ColliderHelper.RotateVector(Direction, Angle / 2) * Radius;
 
         leftDir += Center;
         rightDir += Center;
@@ -37,15 +37,6 @@ public class Sector : IShape
         aabb.Max = max;
     }
 
-    public AABB GetBounds()
-    {
-        float halfAngle = Angle / 2;
-        float2 leftDir = Helper.RotateVector(Direction, -halfAngle) * Radius;
-        float2 rightDir = Helper.RotateVector(Direction, halfAngle) * Radius;
-        float2 min = math.min(math.min(Center, Center + leftDir), Center + rightDir);
-        float2 max = math.max(math.max(Center, Center + leftDir), Center + rightDir);
-        return new AABB(min, max);
-    }
     public bool TestOverlap(float2 point) => CollisionUtils.PointToSector(point, this);
 
     public bool TestOverlap(IShape shape) => shape switch
