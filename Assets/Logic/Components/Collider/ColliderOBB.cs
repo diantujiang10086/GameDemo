@@ -4,61 +4,175 @@ public static partial class CollisionUtils
 {
     public static bool OBBToOBB(OBB a, OBB b)
     {
-        // ·ÖÀëÖá¶¨ÀíÊµÏÖ
-        float2[] axes = new float2[4]
-        {
-            a.GetAxis(0),
-            a.GetAxis(1),
-            b.GetAxis(0),
-            b.GetAxis(1)
-        };
+        a.GetAllAxis(out var aAxisX, out var aAxisY);
+        b.GetAllAxis(out var bAxisX, out var bAxisY);
 
-        foreach (var axis in axes)
-        {
-            if (!OverlapOnAxis(a, b, axis))
-                return false;
-        }
+        // é¢„è®¡ç®—æ‰©å±•è½´
+        var aExtents = a.Extents;
+        float2 aAxisXExt = aAxisX * aExtents.x;
+        float2 aAxisYExt = aAxisY * aExtents.y;
 
-        return true;
+        var bExtents = b.Extents;
+        float2 bAxisXExt = bAxisX * bExtents.x;
+        float2 bAxisYExt = bAxisY * bExtents.y;
+
+        aAxisX = math.normalize(aAxisX);
+        aAxisY = math.normalize(aAxisY);
+        bAxisX = math.normalize(bAxisX);
+        bAxisY = math.normalize(bAxisY);
+
+        // æ£€æŸ¥æ‰€æœ‰åˆ†ç¦»è½´
+        return CheckAxis(a, b, aAxisX, aAxisXExt, aAxisYExt, bAxisXExt, bAxisYExt) &&
+               CheckAxis(a, b, aAxisY, aAxisXExt, aAxisYExt, bAxisXExt, bAxisYExt) &&
+               CheckAxis(a, b, bAxisX, aAxisXExt, aAxisYExt, bAxisXExt, bAxisYExt) &&
+               CheckAxis(a, b, bAxisY, aAxisXExt, aAxisYExt, bAxisXExt, bAxisYExt);
+
     }
+    private static bool CheckAxis(
+        OBB a, OBB b, float2 axis,
+        float2 aAxisXExt, float2 aAxisYExt,
+        float2 bAxisXExt, float2 bAxisYExt)
+    {
+        // è®¡ç®—Açš„æŠ•å½±
+        float aCenterProj = math.dot(a.Center, axis);
+        float aProj0 = math.dot(aAxisXExt, axis);
+        float aProj1 = math.dot(aAxisYExt, axis);
+        float aExtent = math.abs(aProj0) + math.abs(aProj1);
+
+        // è®¡ç®—Bçš„æŠ•å½±
+        float bCenterProj = math.dot(b.Center, axis);
+        float bProj0 = math.dot(bAxisXExt, axis);
+        float bProj1 = math.dot(bAxisYExt, axis);
+        float bExtent = math.abs(bProj0) + math.abs(bProj1);
+
+        // æ£€æŸ¥é‡å 
+        return (aCenterProj + aExtent) >= (bCenterProj - bExtent) &&
+               (bCenterProj + bExtent) >= (aCenterProj - aExtent);
+    }
+
     public static bool OBBToSector(OBB obb, Sector sector)
     {
-        // 1. ¼ì²éOBBÊÇ·ñ°üº¬ÉÈÐÎÖÐÐÄ
-        if (PointToOBB(sector.Center, obb)) return true;
-
-        // 2. ¼ì²éÉÈÐÎ±ß½çÊÇ·ñÓëOBBÏà½»
-        float2 leftBound = ColliderHelper.RotateVector(sector.Direction, -sector.Angle / 2) * sector.Radius;
-        float2 rightBound = ColliderHelper.RotateVector(sector.Direction, sector.Angle / 2) * sector.Radius;
-
-        LineSegment sectorEdge1 = new LineSegment(sector.Center, sector.Center + leftBound);
-        LineSegment sectorEdge2 = new LineSegment(sector.Center, sector.Center + rightBound);
-
-        if (OBBToLineSegment(obb, sectorEdge1) || OBBToLineSegment(obb, sectorEdge2))
+        if (PointToOBB(sector.Center, obb))
             return true;
 
-        // 3. ¼ì²éOBB½ÇµãÊÇ·ñÔÚÉÈÐÎÄÚ
-        float2[] corners = GetOBBCorners(obb);
-        foreach (var corner in corners)
+        obb.GetAllAxis(out var axisX, out var axisY);
+        obb.ComputeCorners(obb.Center, out var corners, out var min, out var max);
+        float2 dir = math.normalize(sector.Direction);
+        float cosHalfAngle = math.cos(sector.Angle * 0.5f);
+        float radiusSqr = sector.Radius * sector.Radius;
+
+        // 1. é¡¶ç‚¹åœ¨æ‰‡å½¢å†…
+        foreach (var point in corners)
         {
-            if (PointToSector(corner, sector))
+            float2 toPoint = point - sector.Center;
+            if (math.lengthsq(toPoint) > radiusSqr) continue;
+
+            float dot = math.dot(math.normalize(toPoint), dir);
+            if (dot >= cosHalfAngle)
+                return true;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            float2 p0 = corners[i];
+            float2 p1 = corners[(i + 1) % 4];
+
+            if (SegmentIntersectsArc(p0, p1, sector.Center, sector.Radius, dir, sector.Angle))
+                return true;
+        }
+        float2 leftDir = math.normalize(SectorRotate(sector.Direction, -sector.Angle * 0.5f));
+        float2 rightDir = math.normalize(SectorRotate(sector.Direction, +sector.Angle * 0.5f));
+        float2 leftEnd = sector.Center + leftDir * sector.Radius;
+        float2 rightEnd = sector.Center + rightDir * sector.Radius;
+
+        for (int i = 0; i < 4; i++)
+        {
+            float2 p0 = corners[i];
+            float2 p1 = corners[(i + 1) % 4];
+
+            if (SegmentIntersect(sector.Center, leftEnd, p0, p1) ||
+                SegmentIntersect(sector.Center, rightEnd, p0, p1))
                 return true;
         }
 
         return false;
+
+    }
+    public static bool SegmentIntersectsArc(
+    float2 p0, float2 p1,
+    float2 center, float radius,
+    float2 direction, float angle)
+    {
+        float2 d = p1 - p0;
+        float2 f = p0 - center;
+
+        float a = math.dot(d, d);
+        float b = 2 * math.dot(f, d);
+        float c = math.dot(f, f) - radius * radius;
+
+        float discriminant = b * b - 4 * a * c;
+        if (discriminant < 0)
+            return false;
+
+        discriminant = math.sqrt(discriminant);
+
+        float t1 = (-b - discriminant) / (2 * a);
+        float t2 = (-b + discriminant) / (2 * a);
+
+        for (int i = 0; i < 2; i++)
+        {
+            float t = (i == 0) ? t1 : t2;
+
+            if (t >= 0f && t <= 1f)
+            {
+                float2 hit = p0 + t * d;
+                float2 toHit = math.normalize(hit - center);
+                float dot = math.dot(toHit, math.normalize(direction));
+                float actualAngle = math.acos(math.clamp(dot, -1f, 1f));
+                if (actualAngle <= angle * 0.5f)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    static bool SegmentIntersect(float2 a1, float2 a2, float2 b1, float2 b2)
+    {
+        float2 d1 = a2 - a1;
+        float2 d2 = b2 - b1;
+        float2 delta = b1 - a1;
+
+        float cross = d1.x * d2.y - d1.y * d2.x;
+        if (math.abs(cross) < 1e-6f)
+            return false; // å¹³è¡Œ
+
+        float t = (delta.x * d2.y - delta.y * d2.x) / cross;
+        float u = (delta.x * d1.y - delta.y * d1.x) / cross;
+
+        return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+    }
+    static float2 SectorRotate(float2 dir, float angleRad)
+    {
+        float sin = math.sin(angleRad);
+        float cos = math.cos(angleRad);
+        return new float2(
+            dir.x * cos - dir.y * sin,
+            dir.x * sin + dir.y * cos
+        );
     }
 
     // OBB vs LineSegment
     public static bool OBBToLineSegment(OBB obb, LineSegment line)
     {
-        // ½«Ïß¶Î×ª»»µ½OBB¾Ö²¿¿Õ¼ä
+        // å°†çº¿æ®µè½¬æ¢åˆ°OBBå±€éƒ¨ç©ºé—´
         float2 localStart = line.Start - obb.Center;
         float2 localEnd = line.End - obb.Center;
 
-        // ·´Ðý×ª
+        // åæ—‹è½¬
         localStart = ColliderHelper.RotateVector(localStart, -obb.Rotation);
         localEnd = ColliderHelper.RotateVector(localEnd, -obb.Rotation);
 
-        // ÏÖÔÚ´¦ÀíÎªAABBÓëÏß¶ÎµÄÅö×²
+        // çŽ°åœ¨å¤„ç†ä¸ºAABBä¸Žçº¿æ®µçš„ç¢°æ’ž
         AABB localAABB = new AABB(
             -obb.Size / 2,
             obb.Size / 2
@@ -80,23 +194,5 @@ public static partial class CollisionUtils
 
         return corners;
     }
-    private static bool OverlapOnAxis(OBB a, OBB b, float2 axis)
-    {
-        // ¼ÆËãÁ½¸öOBBÔÚÖáÉÏµÄÍ¶Ó°·¶Î§
-        (float minA, float maxA) = GetProjection(a, axis);
-        (float minB, float maxB) = GetProjection(b, axis);
-
-        return maxA >= minB && maxB >= minA;
-    }
-    private static (float min, float max) GetProjection(OBB obb, float2 axis)
-    {
-        float centerProj = math.dot(obb.Center, axis);
-        float2 extents = obb.Size / 2;
-
-        float proj0 = math.dot(obb.GetAxis(0) * extents.x, axis);
-        float proj1 = math.dot(obb.GetAxis(1) * extents.y, axis);
-
-        float extent = math.abs(proj0) + math.abs(proj1);
-        return (centerProj - extent, centerProj + extent);
-    }
+    
 }

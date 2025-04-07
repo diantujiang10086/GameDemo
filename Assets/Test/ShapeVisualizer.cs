@@ -70,29 +70,34 @@ public static class ShapeVisualizer
     }
 
 
-    static void DrawSector(Sector sector)
+    static void DrawSector(Sector s, int segments = 32)
     {
-        int segments = 20;
-        float angleStep = sector.Angle / segments;
-        Vector3 prev = new Vector3(sector.Center.x + sector.Direction.x * sector.Radius,0,
-                                             sector.Center.y + sector.Direction.y * sector.Radius);
+        Vector3 center = new Vector3(s.Center.x, 0, s.Center.y);
+        Vector3 forward = new Vector3(s.Direction.x, 0, s.Direction.y);
 
+        float halfAngle = s.Angle * 0.5f;
+
+        // 起始旋转角度
+        float startAngle = -halfAngle;
+        float endAngle = halfAngle;
+
+        // 绘制圆弧线段
+        Vector3 prevPoint = center + Quaternion.Euler(0, math.degrees(startAngle), 0) * forward * s.Radius;
         for (int i = 1; i <= segments; i++)
         {
-            float angle = angleStep * i;
-            float2 rotatedDir = new float2(
-                sector.Direction.x * math.cos(angle) - sector.Direction.y * math.sin(angle),
-                sector.Direction.x * math.sin(angle) + sector.Direction.y * math.cos(angle)
-            );
-            Vector3 next = new Vector3(sector.Center.x + rotatedDir.x * sector.Radius,0,
-                                                 sector.Center.y + rotatedDir.y * sector.Radius);
-            Gizmos.DrawLine(prev, next);
-            prev = next;
+            float t = math.lerp(startAngle, endAngle, i / (float)segments);
+            Vector3 nextPoint = center + Quaternion.Euler(0, math.degrees(t), 0) * forward * s.Radius;
+
+            Gizmos.DrawLine(prevPoint, nextPoint);
+            prevPoint = nextPoint;
         }
 
-        Gizmos.DrawLine(new Vector3(sector.Center.x,0, sector.Center.y), prev);
-        Gizmos.DrawLine(new Vector3(sector.Center.x,0, sector.Center.y),
-                        new Vector3(sector.Center.x + sector.Direction.x * sector.Radius, 0 ,sector.Center.y + sector.Direction.y * sector.Radius));
+        // 绘制两条边界线
+        Vector3 left = Quaternion.Euler(0, math.degrees(-halfAngle), 0) * forward * s.Radius;
+        Vector3 right = Quaternion.Euler(0, math.degrees(halfAngle), 0) * forward * s.Radius;
+        Gizmos.DrawLine(center, center + left);
+        Gizmos.DrawLine(center, center + right);
+
     }
 
 

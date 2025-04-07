@@ -4,99 +4,106 @@ public static partial class CollisionUtils
 {
     public static bool CircleToCircle(Circle a, Circle b)
     {
-        float2 delta = a.Center - b.Center;
-        float dist = math.length(delta);
-        return dist <= a.Radius + b.Radius;
+        // 计算圆心距离的平方
+        float dx = a.Center.x - b.Center.x;
+        float dy = a.Center.y - b.Center.y;
+        float sqDist = dx * dx + dy * dy;
+
+        // 计算半径和的平方
+        float sumRadius = a.Radius + b.Radius;
+        float sqRadius = sumRadius * sumRadius;
+
+        // 比较平方距离
+        return sqDist <= sqRadius;
     }
 
     public static bool CircleToAABB(Circle c, AABB aabb)
     {
-        float2 closest = math.clamp(c.Center, aabb.Min, aabb.Max);
-        float2 delta = c.Center - closest;
-        return math.lengthsq(delta) <= c.Radius * c.Radius;
+        float2 closest;
+        closest.x = math.max(aabb.Min.x, math.min(c.Center.x, aabb.Max.x));
+        closest.y = math.max(aabb.Min.y, math.min(c.Center.y, aabb.Max.y));
+
+        // 计算差值向量并比较平方距离
+        float dx = c.Center.x - closest.x;
+        float dy = c.Center.y - closest.y;
+        return dx * dx + dy * dy <= c.Radius * c.Radius;
+
     }
 
     public static bool CircleToOBB(Circle circle, OBB obb)
     {
-        // 转换到OBB局部空间
-        float2 localPos = circle.Center - obb.Center;
-        float2 closest = float2.zero;
+        // 计算圆心与OBB中心的差值向量
+        float2 diff = circle.Center - obb.Center;
 
-        for (int i = 0; i < 2; i++)
-        {
-            float2 axis = obb.GetAxis(i);
-            float projection = math.dot(localPos, axis);
-            float halfLength = obb.GetHalfLength(i);
+        // 获取OBB的两个轴向
+        obb.GetAllAxis(out var axisX, out var axisY);
 
-            projection = math.clamp(projection, -halfLength, halfLength);
-            closest += axis * projection;
-        }
+        // 将差值向量投影到OBB的局部坐标系
+        float projX = math.dot(diff, axisX);
+        float projY = math.dot(diff, axisY);
+        float2 extents = obb.Extents;
 
-        float2 delta = localPos - closest;
-        return math.lengthsq(delta) <= circle.Radius * circle.Radius;
+        // 在OBB范围内找到最近点
+        float closestX = math.clamp(projX, -extents.x, extents.x);
+        float closestY = math.clamp(projY, -extents.y, extents.y);
+
+        // 计算圆心到最近点的平方距离
+        float dx = projX - closestX;
+        float dy = projY - closestY;
+        float sqDist = dx * dx + dy * dy;
+
+        // 与圆形半径平方比较(避免开平方运算)
+        return sqDist <= circle.Radius * circle.Radius;
+
     }
 
     public static bool CircleToSector(Circle circle, Sector sector)
     {
-        float centerDistSq = math.lengthsq(circle.Center - sector.Center);
-        float totalRadius = circle.Radius + sector.Radius;
-        if (centerDistSq > totalRadius * totalRadius)
+        float2 delta = circle.Center - sector.Center;
+        float distSqr = math.lengthsq(delta);
+        float combinedRadius = sector.Radius + circle.Radius;
+
+        // 如果距离平方大于总半径平方，则肯定不相交
+        if (distSqr > combinedRadius * combinedRadius)
             return false;
 
-        if (PointToSector(circle.Center, sector))
+        float halfAngle = sector.Angle * 0.5f;
+        float cosHalfAngle = math.cos(halfAngle);
+        float sinHalfAngle = math.sin(halfAngle);
+
+        // 转到扇形局部坐标系：前方向为 x 轴，垂直方向为 y 轴
+        float forwardDist = math.dot(delta, sector.Direction); // 圆心在扇形方向上的投影
+        float sideDist = math.abs(math.dot(delta, new float2(-sector.Direction.y, sector.Direction.x))); // 侧向投影
+
+        // 如果点在扇形夹角范围内直接返回 true
+        if (forwardDist > math.length(delta) * cosHalfAngle)
             return true;
 
-        if (centerDistSq <= circle.Radius * circle.Radius)
-            return true;
+        float2 arcEnd = sector.Radius * new float2(cosHalfAngle, sinHalfAngle);
+        float2 localPos = new float2(forwardDist, sideDist);
 
-        float2 leftBound = ColliderHelper.RotateVector(sector.Direction, -sector.Angle / 2);
-        float2 rightBound = ColliderHelper.RotateVector(sector.Direction, sector.Angle / 2);
-
-        if (CircleToLineSegment(circle,
-        new LineSegment(sector.Center, sector.Center + leftBound * sector.Radius)) ||
-        CircleToLineSegment(circle,
-            new LineSegment(sector.Center, sector.Center + rightBound * sector.Radius)))
-        {
-            return true;
-        }
-
-        float2 circleToSector = circle.Center - sector.Center;
-        float distanceToArc = math.length(circleToSector) - sector.Radius;
-
-        if (math.abs(distanceToArc) <= circle.Radius)
-        {
-            float angleToCircle = math.atan2(circleToSector.y, circleToSector.x);
-            float sectorStartAngle = math.atan2(sector.Direction.y, sector.Direction.x) - sector.Angle / 2;
-            float sectorEndAngle = sectorStartAngle + sector.Angle;
-
-            angleToCircle = ColliderHelper.NormalizeAngle(angleToCircle);
-            sectorStartAngle = ColliderHelper.NormalizeAngle(sectorStartAngle);
-            sectorEndAngle = ColliderHelper.NormalizeAngle(sectorEndAngle);
-
-            if (sectorStartAngle <= sectorEndAngle)
-            {
-                if (angleToCircle >= sectorStartAngle && angleToCircle <= sectorEndAngle)
-                    return true;
-            }
-            else
-            {
-                if (angleToCircle >= sectorStartAngle || angleToCircle <= sectorEndAngle)
-                    return true;
-            }
-
-            float angleDiff1 = math.abs(ColliderHelper.NormalizeAngle(angleToCircle - sectorStartAngle));
-            float angleDiff2 = math.abs(ColliderHelper.NormalizeAngle(angleToCircle - sectorEndAngle));
-            if (math.min(angleDiff1, angleDiff2) <= math.asin(circle.Radius / math.length(circleToSector)))
-                return true;
-        }
-
-        return false;
+        // 判断圆心投影点是否在扇形边缘线段附近
+        return SegmentPointSqrDistance(float2.zero, arcEnd, localPos) <= circle.Radius * circle.Radius;
     }
 
-    public static bool CircleToLineSegment(Circle c, LineSegment ls)
+    // 计算点到线段的最短距离平方
+    static float SegmentPointSqrDistance(float2 start, float2 end, float2 point)
     {
-        float2 closest = ClosestPointOnSegment(ls.Start, ls.End, c.Center);
-        return PointToCircle(closest, c);
+        float2 segment = end - start;
+        float t = math.dot(point - start, segment) / math.lengthsq(segment);
+        t = math.clamp(t, 0f, 1f);
+        float2 projection = start + t * segment;
+        return math.lengthsq(point - projection);
+    }
+
+    public static bool CircleToLineSegment(Circle circle, LineSegment segment)
+    {
+        float2 seg = segment.End - segment.Start;
+        float2 toCenter = circle.Center - segment.Start;
+        float t = math.dot(toCenter, seg) / math.lengthsq(seg);
+        t = math.clamp(t, 0f, 1f);
+        float2 closest = segment.Start + seg * t;
+        return math.lengthsq(circle.Center - closest) <= circle.Radius * circle.Radius;
     }
 
     private static float2 ClosestPointOnSegment(float2 a, float2 b, float2 p)
