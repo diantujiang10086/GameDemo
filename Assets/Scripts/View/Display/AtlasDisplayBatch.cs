@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class AtlasDisplayBatch : DisplayBatch
 {
-    private bool isInitialize = false;
     private AtlasAnimation[] atlasAnimations;
     private NativeArray<int4> animationDatas;
     private NativeArray<float4> tiles;
@@ -18,6 +17,10 @@ public class AtlasDisplayBatch : DisplayBatch
     public NativeArray<float2> Animations => animtions;
 
     public AtlasDisplayBatch(int materialId, Mesh mesh, int maxInstance) : base(materialId, mesh, maxInstance)
+    {
+    }
+
+    protected override void OnInitialize()
     {
         try
         {
@@ -33,6 +36,7 @@ public class AtlasDisplayBatch : DisplayBatch
             tiles = new NativeArray<float4>(length, Allocator.Persistent);
             sizes = new NativeArray<float4>(length, Allocator.Persistent);
             animationDatas = new NativeArray<int4>(atlasAnimations.Length, Allocator.Persistent);
+            animtions = new NativeArray<float2>(maxInstance, Allocator.Persistent);
 
             int offset = 0;
             for (int i = 0; i < atlasAnimations.Length; i++)
@@ -52,13 +56,10 @@ public class AtlasDisplayBatch : DisplayBatch
 
                 offset += atlasAnimation.tiles.Length;
             }
-            animtions = new NativeArray<float2>(maxInstance, Allocator.Persistent);
-            isInitialize = true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Log.Error(ex);
-            Log.Warning($"load AtlasAnimationConfig fail! {materialId}");
+            Log.Warning($"load AtlasAnimationConfig fail! {materialId}\n{ex.Message}");
         }
     }
 
@@ -69,16 +70,11 @@ public class AtlasDisplayBatch : DisplayBatch
 
     protected override void UpdateNativeArrays(int index, Display display)
     {
-        if (!isInitialize)
-            return;
         animtions[index] = new float2(display.atlasAnimationIndex, display.animationStartTime);
     }
 
     protected override void OnDispose()
     {
-        if (!isInitialize)
-            return;
-
         tiles.Dispose();
         sizes.Dispose();
         animtions.Dispose();

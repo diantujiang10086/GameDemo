@@ -31,8 +31,6 @@ public abstract class BatchDataBuffer : IDisposable
 
     public int WindowSizeInFloat4 => m_windowSizeInFloat4;
 
-    public bool IsJobCompleted => updateGraphicsBufferFence.IsCompleted;
-
     public void Initialize(int maxInstance)
     {
         m_maxInstances = maxInstance;
@@ -63,6 +61,11 @@ public abstract class BatchDataBuffer : IDisposable
         m_windowSizeInFloat4 = m_alignedGPUWindowSize / Float4Size;
         m_sysmemBuffer = new NativeArray<float4>(m_totalGpuBufferSize / Float4Size, Allocator.Persistent, NativeArrayOptions.ClearMemory);
         m_isInitialized = true;
+    }
+
+    public void Complete()
+    {
+        updateGraphicsBufferFence.Complete();
     }
 
     public void UpdateSystemBuffer(DisplayBatch displayBatch, int instanceCount)

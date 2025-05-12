@@ -5,10 +5,11 @@ using System;
 
 public class DisplayBatch : IDisposable
 {
+    protected int maxInstance;
     protected int materialId;
     protected Material material;
     private Pool<Display> displays;
-    private BatchDataBuffer batchDataBuffer;
+    protected BatchDataBuffer batchDataBuffer;
     private BRGContainer brgContainer;
 
     private NativeArray<float3> positions;
@@ -23,6 +24,7 @@ public class DisplayBatch : IDisposable
 
     public DisplayBatch(int materialId, Mesh mesh, int maxInstance)
     {
+        this.maxInstance = maxInstance;
         this.materialId = materialId;
         var materialConfig = ConfigManager.Instance.Get<MaterialConfig>(materialId);
         material = ResourceManager.Load<Material>(materialConfig.materialPath);
@@ -34,6 +36,7 @@ public class DisplayBatch : IDisposable
         batchDataBuffer = CreateBatchDataBuffer();
         batchDataBuffer.Initialize(maxInstance);
         brgContainer = new BRGContainer(batchDataBuffer, mesh, material);
+        OnInitialize();
     }
 
     public Display CreateDisplay()
@@ -55,8 +58,7 @@ public class DisplayBatch : IDisposable
 
     public void FixedUpdate()
     {
-        if (!batchDataBuffer.IsJobCompleted)
-            return;
+        batchDataBuffer.Complete();
 
         for (int i = 0; i < displays.Count; i++)
         {
@@ -92,6 +94,11 @@ public class DisplayBatch : IDisposable
     protected virtual BatchDataBuffer CreateBatchDataBuffer()
     {
         return new SpriteBatchDataBuffer();
+    }
+
+    protected virtual void OnInitialize()
+    {
+
     }
 
     protected virtual void OnCreateDisplay(Display display)
