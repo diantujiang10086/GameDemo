@@ -18,6 +18,11 @@ public class AtlasAnimationDataEditor : EditorWindow
     private AtlasAnimationData selectedAsset;
     private List<Animation2D> animations = new List<Animation2D>();
 
+    private void OnEnable()
+    {
+        isImport = true;
+    }
+
     private void OnGUI()
     {
         EditorGUILayout.Space();
@@ -122,11 +127,13 @@ public class AtlasAnimationDataEditor : EditorWindow
                 sprites = new List<Sprite>(anim.sprites), 
                 isExpanded = true
             };
-
             animations.Add(anim2D);
+
+            if(anim.sprites.Length > 0)
+            {
+                atlasTexture = anim.sprites[0].texture;
+            }
         }
-
-
     }
 
     private void SpritesDropArea(Animation2D animation)
@@ -217,7 +224,7 @@ public class AtlasAnimationDataEditor : EditorWindow
             {
                 var sprite = animation2D.sprites[j];
                 animData.tiles[j] = GetTile(atlasTexture.width, atlasTexture.height, sprite.rect);
-                animData.sizes[j] = new float2(sprite.rect.width, sprite.rect.height);
+                animData.sizes[j] = new float2(sprite.rect.width / 100f, sprite.rect.height / 100f);
             }
 
             atlasAnimations[i] = animData;
