@@ -1,0 +1,381 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13eb91a79d545394ab95ffd01b09b95f, type: 3}
+  m_Name: Girls
+  m_EditorClassIdentifier: 
+  atlasAnimations:
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: 945331312, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1621646058, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1938146356, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 766667498, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1539866207, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1002397337, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 2056727563, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 2027296574, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.8333333
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.8333333
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: -1153507575, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1209191226, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -601932064, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 2079205973, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1099513420, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1366870816, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -940706559, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 2061598415, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.66732025
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.66732025
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: 1010444903, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1843647405, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 313483112, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 65750834, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1610221131, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1522683879, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 169275833, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1115827246, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.5013072
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.5013072
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: 1438423608, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 293524468, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -2118047773, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1061938634, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -24504319, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -280528236, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1827239766, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1562676249, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.33529413
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.33529413
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: 1376905546, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1727810802, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -442796776, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1855642527, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 1119464662, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -789225705, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -632352070, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -225920113, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.16928105
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.16928105
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+  - isLoop: 1
+    frameRate: 12
+    sprites:
+    - {fileID: 701522214, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 428807833, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 137942299, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -1038460897, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -545860591, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 527501620, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: 451789533, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    - {fileID: -657126921, guid: a7db34873aa40dd4aaeeea5353d5108c, type: 3}
+    tiles:
+    - x: 0.125
+      y: 0.16666667
+      z: 0
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.12369598
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.24739195
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.37108794
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.4947839
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.6184799
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.7421759
+      w: 0.003267974
+    - x: 0.125
+      y: 0.16666667
+      z: 0.86587185
+      w: 0.003267974
+    sizes:
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
+    - x: 83.875
+      y: 127.5
