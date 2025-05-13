@@ -91,7 +91,7 @@ public class ConvertHelper
             }
         }
 
-        if (conversionType.Name == "Vector2")
+        if (conversionType.Name == "float2")
         {
             var array = value.Split('#');
             return value.Split('#').Length switch
@@ -101,7 +101,7 @@ public class ConvertHelper
                 _ => float2.zero
             };
         }
-        else if (conversionType.Name == "Vector3")
+        else if (conversionType.Name == "float3")
         {
             var array = value.Split('#');
             return value.Split('#').Length switch
@@ -112,7 +112,7 @@ public class ConvertHelper
                 _ => float3.zero
             };
         }
-        else if (conversionType.Name == "Vector2Int")
+        else if (conversionType.Name == "int2")
         {
             var array = value.Split('#');
             return value.Split('#').Length switch
@@ -122,7 +122,7 @@ public class ConvertHelper
                 _ => int2.zero
             };
         }
-        else if (conversionType.Name == "Vector3Int")
+        else if (conversionType.Name == "int3")
         {
             var array = value.Split('#');
             return value.Split('#').Length switch
@@ -133,7 +133,7 @@ public class ConvertHelper
                 _ => int3.zero
             };
         }
-        else if (conversionType.Name == "Quaternion")
+        else if (conversionType.Name == "quaternion")
         {
             var array = value.Split('#');
             return value.Split('#').Length switch
