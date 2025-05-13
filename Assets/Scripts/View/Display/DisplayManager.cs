@@ -10,7 +10,7 @@ public class DisplayManager : Singleton<DisplayManager>, IDisposable
 
     public void CreateDisplay(Actor actor)
     {
-        var config = ConfigManager.Instance.Get<ActorConfig>(actor.configId);
+        var config = ConfigManager.Instance.GetConfig<ActorConfig>(actor.configId);
         var display = displayBatchManager.CreateDisplay(config.materialId);
         display.SetActor(actor);
         displayDict[actor.id] = display;

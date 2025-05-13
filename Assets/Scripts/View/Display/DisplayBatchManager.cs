@@ -10,7 +10,7 @@ public class DisplayBatchManager : IDisposable
     {
         if (!batchs.TryGetValue(materialId, out var batchDisplay))
         {
-            var materialConfig = ConfigManager.Instance.Get<MaterialConfig>(materialId);
+            var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
             if (materialConfig.materialType == MaterialType.Sprine)
             {
                 batchDisplay = new DisplayBatch(materialId, ViewHelper.MakeQuad(), maxInstance);

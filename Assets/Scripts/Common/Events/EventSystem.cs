@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 public class EventSystem: Singleton<EventSystem>
 {
-    private List<Assembly> assemblies = new List<Assembly>();
     private Dictionary<Type, List<IEvent>> allEvents = new Dictionary<Type, List<IEvent>>();
 
     public void AddEvents()

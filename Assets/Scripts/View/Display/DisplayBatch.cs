@@ -26,7 +26,7 @@ public class DisplayBatch : IDisposable
     {
         this.maxInstance = maxInstance;
         this.materialId = materialId;
-        var materialConfig = ConfigManager.Instance.Get<MaterialConfig>(materialId);
+        var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
         material = ResourceManager.Load<Material>(materialConfig.materialPath);
 
         displays = new Pool<Display>(maxInstance);

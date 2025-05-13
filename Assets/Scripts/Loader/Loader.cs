@@ -6,7 +6,7 @@ public static class Loader
 {
     private static HashSet<string> loadAssemblys = new HashSet<string> 
     {
-        "Logic","View"
+        "Logic","View", "Common"
     };
     public static void LoadAll()
     {
@@ -23,10 +23,9 @@ public static class Loader
                 }
             }
         }
-        AssemblyHelper.Assemblies = list.ToArray();
 
         var type = startAssembly.GetType("Entry");
         var method = type.GetMethod("Start", BindingFlags.Public | BindingFlags.Static);
-        method.Invoke(null, new object[] { } );
+        method.Invoke(null, new object[] { list.ToArray() });
     }
 }

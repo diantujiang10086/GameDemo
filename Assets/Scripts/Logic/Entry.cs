@@ -1,7 +1,10 @@
-﻿public static class Entry
+﻿using System.Reflection;
+
+public static class Entry
 {
-    public static void Start()
+    public static void Start(Assembly[] assemblies)
     {
+        AssemblyHelper.SetAssemblies(assemblies);
         EventSystem.Instance.AddEvents();
         ResourceManager.resourceLoader = default;
 

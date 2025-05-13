@@ -24,7 +24,7 @@ public class AtlasDisplayBatch : DisplayBatch
     {
         try
         {
-            var materialConfig = ConfigManager.Instance.Get<MaterialConfig>(materialId);
+            var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
             var data = ResourceManager.Load<AtlasAnimationData>(materialConfig.atlasPath);
 
             atlasAnimations = data.atlasAnimations;

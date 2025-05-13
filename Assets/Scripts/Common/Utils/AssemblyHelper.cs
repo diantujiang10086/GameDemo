@@ -4,20 +4,16 @@ using System.Reflection;
 
 public static class AssemblyHelper
 {
-    private static Assembly[] assemblies; 
-    public static Assembly[] Assemblies
+    private static Assembly[] g_assemblies; 
+    public static void SetAssemblies(Assembly[] assemblies)
     {
-        get => assemblies;
-        internal set
-        {
-            assemblies = value;
-        }
+        g_assemblies = assemblies;
     }
 
     public static IEnumerable<(Type type, T attribute)> GetTypes<T>() where T : class
     {
         var attrType = typeof(T);
-        foreach (var assembly in Assemblies)
+        foreach (var assembly in g_assemblies)
         {
             foreach (var type in assembly.GetTypes())
             {
@@ -25,8 +21,12 @@ public static class AssemblyHelper
                 if (attrs.Length == 0)
                     continue;
 
-                yield return (type, attrs[0] as T);
+                foreach (var attr in attrs)
+                {
+                    yield return (type, attr as T);
+                }
             }
         }
     }
+
 }
