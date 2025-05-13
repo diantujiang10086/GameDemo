@@ -1,0 +1,3 @@
+[submodule "Config"]
+	path = Config
+	url = https://github.com/diantujiang10086/GameDemoConfig.git
