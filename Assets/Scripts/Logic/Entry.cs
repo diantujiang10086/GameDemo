@@ -6,5 +6,6 @@
         ResourceManager.resourceLoader = default;
 
         EventSystem.Instance.Publish(default(GameInitialization));
+        EventSystem.Instance.Publish(default(GameStart));
     }
 }

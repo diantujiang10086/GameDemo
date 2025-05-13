@@ -1,9 +1,7 @@
-﻿using Unity.Mathematics;
 using UnityEngine;
 
-public static class Helper
+public static class ViewHelper
 {
-    private const float epsilon = 1e-6f;
     private static Mesh quad;
     public static Mesh MakeQuad()
     {
@@ -25,16 +23,4 @@ public static class Helper
         return quad;
 
     }
-
-    public static bool Equal(this float3 a, float3 b)
-    {
-        return math.all(math.abs(a - b) < epsilon);
-    }
-
-    public static bool Equal(this quaternion a, quaternion b)
-    {
-        return math.all(math.abs(a.value - b.value) < new float4(epsilon));
-    }
-
 }
-

@@ -5,6 +5,11 @@ public struct GameInitialization
 
 }
 
+public struct GameStart
+{ 
+
+}
+
 public struct NewActor
 {
     public int actorId;

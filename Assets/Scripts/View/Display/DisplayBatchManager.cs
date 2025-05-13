@@ -13,11 +13,11 @@ public class DisplayBatchManager : IDisposable
             var materialConfig = ConfigManager.Instance.Get<MaterialConfig>(materialId);
             if (materialConfig.materialType == MaterialType.Sprine)
             {
-                batchDisplay = new DisplayBatch(materialId, Helper.MakeQuad(), maxInstance);
+                batchDisplay = new DisplayBatch(materialId, ViewHelper.MakeQuad(), maxInstance);
             }
             else if (materialConfig.materialType == MaterialType.Atlas)
             {
-                batchDisplay = new AtlasDisplayBatch(materialId, Helper.MakeQuad(), maxInstance);
+                batchDisplay = new AtlasDisplayBatch(materialId, ViewHelper.MakeQuad(), maxInstance);
             }
             batchs[materialId] = batchDisplay;
         }

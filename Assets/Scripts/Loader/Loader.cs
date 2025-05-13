@@ -6,7 +6,7 @@ public static class Loader
 {
     private static HashSet<string> loadAssemblys = new HashSet<string> 
     {
-        "Core","View"
+        "Logic","View"
     };
     public static void LoadAll()
     {
@@ -17,7 +17,7 @@ public static class Loader
             if (loadAssemblys.Contains(assemblies.GetName().Name))
             {
                 list.Add(assemblies);
-                if(assemblies.GetName().Name == "Core")
+                if(assemblies.GetName().Name == "Logic")
                 {
                     startAssembly = assemblies;
                 }
