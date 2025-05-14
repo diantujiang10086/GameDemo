@@ -7,12 +7,14 @@ public class Entity : DisposeObject
     public long InstanceId { get; protected set; }
     public bool IsDisposed => isDisposed;
 
+    private bool isComponent;
     private Entity parent;
     private Dictionary<long, Entity> childs;
     private Dictionary<Type, Entity> components;
     private Dictionary<long, Entity> Childs => childs ??= new Dictionary<long, Entity>();
     private Dictionary<Type, Entity> Components => components ??= new Dictionary<Type, Entity>();
 
+    internal bool IsComponent => isComponent;
     public Entity Parent
     {
         get => parent;
@@ -22,6 +24,7 @@ public class Entity : DisposeObject
             RegisterSystem();
         }
     }
+
 
     public Entity()
     {
@@ -50,6 +53,7 @@ public class Entity : DisposeObject
         }
 
         component = Create(typeof(T));
+        component.isComponent = true;
         component.Parent = this;
         component.InstanceId = this.InstanceId;
         (component as IAwake)?.Awake();
@@ -66,6 +70,7 @@ public class Entity : DisposeObject
         }
 
         component = Create(typeof(T));
+        component.isComponent = true;
         component.Parent = this;
         component.InstanceId = this.InstanceId;
         (component as IAwake<A>)?.Awake(a);
@@ -82,38 +87,48 @@ public class Entity : DisposeObject
 
     public void RemoveComponent<T>()
     {
+        RemoveComponent(typeof(T));
+    }
+
+    public void RemoveComponent(Entity component)
+    {
+        RemoveComponent(component.GetType());
+    }
+    public void RemoveComponent(Type type)
+    {
         if (components == null)
             return;
-        Components.TryGetValue(typeof(T), out var component);
+
+        Components.TryGetValue(type, out var component);
         if (component != null)
         {
             component.Dispose();
-            Components.Remove(typeof(T));
+            Components.Remove(type);
         }
     }
 
     public T AddChild<T>() where T : Entity
     {
         var child = Create(typeof(T));
-        (child as IAwake)?.Awake();
         Childs[child.InstanceId] = child;
         child.Parent = this;
+        (child as IAwake)?.Awake();
         return child as T;
     }
     public T AddChild<T, A>(A a) where T : Entity
     {
         var child = Create(typeof(T));
         child.Parent = this;
-        (child as IAwake<A>)?.Awake(a);
         Childs[child.InstanceId] = child;
+        (child as IAwake<A>)?.Awake(a);
         return child as T;
     }
     public T AddChild<T, A, B>(A a, B b) where T : Entity
     {
         var child = Create(typeof(T));
         child.Parent = this;
-        (child as IAwake<A, B>)?.Awake(a, b);
         Childs[child.InstanceId] = child;
+        (child as IAwake<A, B>)?.Awake(a, b);
         return child as T;
     }
 
@@ -122,6 +137,11 @@ public class Entity : DisposeObject
     {
         Childs.TryGetValue(instanceId, out var child);
         return child as T;
+    }
+
+    public void RemoveChild(Entity entity)
+    {
+        RemoveChild(entity.InstanceId);
     }
 
     public void RemoveChild(long instanceId)
@@ -176,16 +196,22 @@ public class Entity : DisposeObject
             components = null;
         }
 
-        OnDestory();
-        if (parent != null)
+        if (this is IDestory destory)
+            destory.Destory();
+
+        if (parent != null && !this.parent.IsDisposed)
         {
-            parent.RemoveChild(InstanceId);
+            if(this.isComponent)
+            {
+                parent.RemoveComponent(this);
+            }
+            else
+            {
+                parent.RemoveChild(this);
+            }
             parent = null;
         }
-    }
 
-    protected virtual void OnDestory() 
-    {
-    
+        base.Dispose();
     }
 }

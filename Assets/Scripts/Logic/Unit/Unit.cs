@@ -1,6 +1,6 @@
 using Unity.Mathematics;
 
-public class Unit : Entity , IAwake<UnitConfig>
+public class Unit : Entity , IAwake<UnitConfig>, IDestory
 {
     private UnitConfig config;
     private float3 m_position;
@@ -56,27 +56,10 @@ public class Unit : Entity , IAwake<UnitConfig>
     public void Awake(UnitConfig config)
     {
         this.config = config;
-        position = config.position;
-        scale = config.scale;
-        rotation = quaternion.Euler(config.rotation);
-
-        if(config.displayId != 0)
-        {
-            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(config.displayId);
-            if(displayConfig != null)
-            {
-                AddComponent<DisplayComponent, DisplayConfig>(displayConfig);
-            }
-        }
-
-        if(config.moveSpeed > 0)
-        {
-            AddComponent<MoveComponent>();
-        }
     }
 
-    protected override void OnDestory()
+    void IDestory.Destory()
     {
-        EventSystem.Instance.Publish(new UnitDestory { unitId = InstanceId });    
+        EventSystem.Instance.Publish(new UnitDestory { unitId = InstanceId });
     }
 }

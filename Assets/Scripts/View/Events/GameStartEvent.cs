@@ -3,13 +3,8 @@ public class GameStartEvent : AEvent<GameStart>
 {
     protected override void Run(GameStart a)
     {
-        for (int i = 0; i < 100; i++)
-        {
-            for (int j = 0; j < 100; j++)
-            {
-                var unit = UnitManager.Instance.Create(1);
-                unit.position = new Unity.Mathematics.float3(i, j, 0);
-            }
-        }
+        var unit = UnitManager.Instance.Create(1, new Unity.Mathematics.float3(1, 1, 1));
+        var unit2 = UnitManager.Instance.Create(2,new Unity.Mathematics.float3(2, 0, 0));
+
     }
 }
