@@ -74,4 +74,9 @@ public class Unit : Entity , IAwake<UnitConfig>
             AddComponent<MoveComponent>();
         }
     }
+
+    protected override void OnDestory()
+    {
+        EventSystem.Instance.Publish(new UnitDestory { unitId = InstanceId });    
+    }
 }

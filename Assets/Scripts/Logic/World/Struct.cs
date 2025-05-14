@@ -15,7 +15,7 @@ public struct UnitCreate
     public long unitId;
 }
 
-public struct UnitDelete
+public struct UnitDestory
 {
     public long unitId;
 }

@@ -175,5 +175,17 @@ public class Entity : DisposeObject
             components.Clear();
             components = null;
         }
+
+        OnDestory();
+        if (parent != null)
+        {
+            parent.RemoveChild(InstanceId);
+            parent = null;
+        }
+    }
+
+    protected virtual void OnDestory() 
+    {
+    
     }
 }
