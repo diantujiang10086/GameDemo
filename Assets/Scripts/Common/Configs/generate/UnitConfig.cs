@@ -11,6 +11,8 @@ public partial class UnitConfig : IConfig
 	public int displayId;
 	public float moveSpeed;
 	public float rotationSpeed;
+	public int[] skills;
+	public int[] buffs;
 }
 
 [Config(typeof(UnitConfig))]

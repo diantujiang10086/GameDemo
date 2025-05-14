@@ -13,7 +13,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         return Create(configId, position, new float3(1, 1, 1), default);
     }
 
-    public Unit Create(int configId, float3 position , float3 scale , float3 rotation )
+    public Unit Create(int configId, float3 position, float3 scale, float3 rotation)
     {
         var config = ConfigManager.Instance.GetConfig<UnitConfig>(configId);
         if (config == null)
@@ -23,7 +23,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
 
         unit.position = position + config.position;
         unit.scale = scale + config.scale;
-        unit.rotation =quaternion.Euler(rotation + config.rotation);
+        unit.rotation = quaternion.Euler(rotation + config.rotation);
 
         if (config.displayId != 0)
         {
@@ -39,6 +39,14 @@ public class UnitManager : Singleton<UnitManager>, IAwake
             unit.AddComponent<MoveComponent>();
         }
 
+        if(config.skills != null)
+        {
+            var skillManager = unit.AddComponent<SkillManager>();
+            foreach (var skillId in config.skills)
+            {
+                skillManager.AddSkill(skillId);
+            }
+        }
 
         EventSystem.Instance.Publish(new UnitCreate { unitId = unit.InstanceId });
         return unit;

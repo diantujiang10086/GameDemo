@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        TimeSystem.Instance.time = Time.time;
         world.FixedUpdate(Time.fixedDeltaTime);
     }
 
