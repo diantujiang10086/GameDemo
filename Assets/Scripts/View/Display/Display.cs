@@ -9,7 +9,9 @@ public class Display
     private bool isRotation = false;
     private float3 targetPosition;
     private quaternion targetRotation;
-    private Actor actor;
+    private Unit unit;
+    private DisplayComponent displayComponent;
+    private MoveComponent moveComponent;
 
     public int atlasAnimationIndex;
     public float animationStartTime;
@@ -20,12 +22,19 @@ public class Display
     public quaternion rotation;
     public bool isDirty { get; private set; } = false;
 
-    public void SetActor(Actor actor)
+    public void SetDisplayComponent(DisplayComponent displayComponent)
     {
+        this.displayComponent = displayComponent;
+        
+        unit = displayComponent.GetParent<Unit>();
+        position = unit.position;
+        scale = unit.scale;
+        rotation = unit.rotation;
+        
+        atlasAnimationIndex = displayComponent.animationIndex;
         animationStartTime = Time.time;
-        position = actor.position;
-        scale = actor.scale;
-        rotation = quaternion.Euler(actor.rotation);
+
+        moveComponent = unit.GetComponent<MoveComponent>();
         isDirty = true;
     }
 
@@ -47,9 +56,9 @@ public class Display
         isDirty = true;
     }
 
-    public void RotationLook(float3 roation)
+    public void RotationLook(quaternion roation)
     {
-        targetRotation = quaternion.Euler(roation);
+        targetRotation = roation;
         isRotation = true;
         isDirty = true;
     }
@@ -60,17 +69,17 @@ public class Display
         isDirty = true;
     }
 
-    public void SetRotation(float3 rotation)
+    public void SetRotation(quaternion rotation)
     {
-        this.rotation = quaternion.Euler(rotation);
+        this.rotation = rotation;
         isDirty = true;
     }
 
-    public void FixedUpdate()
+    public void Update()
     {
         if (isMove)
         {
-            position = math.lerp(position, targetPosition, Time.fixedTime * actor.MoveSpeed);
+            position = math.lerp(position, targetPosition, Time.fixedTime * moveComponent.MoveSpeed);
             isDirty = true;
             if (position.Equals(targetPosition))
             {
@@ -80,7 +89,7 @@ public class Display
 
         if(isRotation)
         {
-            rotation = math.slerp(rotation, targetRotation, Time.fixedTime * actor.RotationSpeed);
+            rotation = math.slerp(rotation, targetRotation, Time.fixedTime * moveComponent.RotationSpeed);
             isDirty = true;
             if (rotation.Equals(targetRotation))
             {

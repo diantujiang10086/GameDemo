@@ -24,8 +24,8 @@ public class AtlasDisplayBatch : DisplayBatch
     {
         try
         {
-            var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
-            var data = ResourceManager.Load<AtlasAnimationData>(materialConfig.atlasPath);
+            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(displayId);
+            var data = ResourceManager.Instance.Load<AtlasAnimationData>(displayConfig.atlasPath);
 
             atlasAnimations = data.atlasAnimations;
 
@@ -59,7 +59,7 @@ public class AtlasDisplayBatch : DisplayBatch
         }
         catch (Exception ex)
         {
-            Log.Warning($"load AtlasAnimationConfig fail! {materialId}\n{ex.Message}");
+            Log.Warning($"load AtlasAnimationConfig fail! {displayId}\n{ex.Message}");
         }
     }
 

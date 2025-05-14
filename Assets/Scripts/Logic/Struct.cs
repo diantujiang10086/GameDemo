@@ -10,50 +10,50 @@ public struct GameStart
 
 }
 
-public struct NewActor
+public struct UnitCreate
 {
-    public int actorId;
+    public long unitId;
 }
 
-public struct DeleteActor
+public struct UnitDelete
 {
-    public int actorId;
+    public long unitId;
 }
 
-public struct ActorChangedPosition
+public struct UnitChangedPosition
 {
-    public int actorId;
+    public long unitId;
     public float3 oldValue;
     public float3 newValue;
 }
 
-public struct ActorMovePosition
+public struct UnitMovePosition
 {
-    public int actorId;
+    public long unitId;
     public float3 value;
 }
 
-public struct ActorChangedScale
+public struct UnitChangedScale
 {
-    public int actorId;
+    public long unitId;
     public float3 oldValue;
     public float3 newValue;
 }
-public struct ActorChangedRotation
+public struct UnitChangedRotation
 {
-    public int actorId;
-    public float3 oldValue;
-    public float3 newValue;
+    public long unitId;
+    public quaternion oldValue;
+    public quaternion newValue;
 }
 
-public struct ActorLookAt
+public struct UnitLookAt
 {
-    public int actorId;
-    public float3 value;
+    public long unitId;
+    public quaternion value;
 }
 
-public struct ActorAnimationIndex
+public struct UnitAnimationIndex
 {
-    public int actorId;
+    public long unitId;
     public int value;
 }

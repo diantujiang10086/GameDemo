@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class EventSystem: Singleton<EventSystem>
+public class EventSystem: Singleton<EventSystem>, IAwake
 {
     private Dictionary<Type, List<IEvent>> allEvents = new Dictionary<Type, List<IEvent>>();
 
-    public void AddEvents()
+    public void Awake()
     {
         foreach (var item in AssemblyHelper.GetTypes<EventAttribute>())
         {

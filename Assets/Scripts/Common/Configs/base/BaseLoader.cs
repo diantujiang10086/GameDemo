@@ -24,7 +24,7 @@ public class BaseLoader
     {
         OnBeginLoad();
 
-        var text = ResourceManager.LoadText($"config/{type.Name}");
+        var text = ResourceManager.Instance.LoadText($"config/{type.Name}");
 
         if (string.IsNullOrEmpty(text))
         {

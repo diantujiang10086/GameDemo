@@ -7,9 +7,8 @@ public class GameStartEvent : AEvent<GameStart>
         {
             for (int j = 0; j < 100; j++)
             {
-                var actor = ActorManager.Instance.Create(1);
-                actor.animationIndex = 3;
-                actor.position = new Unity.Mathematics.float3(i, j, 0);
+                var unit = UnitManager.Instance.Create(1);
+                unit.position = new Unity.Mathematics.float3(i, j, 0);
             }
         }
     }

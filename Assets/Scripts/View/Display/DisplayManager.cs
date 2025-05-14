@@ -1,64 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class DisplayManager : Singleton<DisplayManager>, IDisposable
+public class DisplayManager : Singleton<DisplayManager>, IUpdate
 {
-    private List<Display> displays = new List<Display>(1000);
-    private Dictionary<int, Display> displayDict = new Dictionary<int, Display>();
-    private DisplayBatchManager displayBatchManager = new DisplayBatchManager();
+    private List<Display> displays = new List<Display>(10000);
+    private Dictionary<long, Display> displayDict = new Dictionary<long, Display>(10000);
 
-    public void CreateDisplay(Actor actor)
+    public void CreateDisplay(DisplayComponent displayComponent)
     {
-        var config = ConfigManager.Instance.GetConfig<ActorConfig>(actor.configId);
-        var display = displayBatchManager.CreateDisplay(config.materialId);
-        display.SetActor(actor);
-        displayDict[actor.id] = display;
+        var config = displayComponent.GetParent<Unit>().Config;
+        
+        var display = DisplayBatchManager.Instance.CreateDisplay(config.displayId);
+        if (display == null)
+            return;
+        display.SetDisplayComponent(displayComponent);
+        displayDict[displayComponent.InstanceId] = display;
         displays.Add(display);
     }
 
-    public Display GetDisplay(Actor actor)
+    public Display GetDisplay(Unit unit)
     {
-        return GetDisplay(actor.id);
+        return GetDisplay(unit.InstanceId);
     }
 
-    public Display GetDisplay(int actorId)
+    public Display GetDisplay(DisplayComponent displayComponent)
     {
-        displayDict.TryGetValue(actorId, out var display);
+        return GetDisplay(displayComponent.InstanceId);
+    }
+
+    public Display GetDisplay(long unitInstanceId)
+    {
+        displayDict.TryGetValue(unitInstanceId, out var display);
         return display;
     }
 
-    public void RemoveDisplay(Actor actor)
+    public void RemoveDisplay(DisplayComponent displayComponent)
     {
-        RemoveDisplay(actor.id);
+        RemoveDisplay(displayComponent.InstanceId);
     }
 
-    public void RemoveDisplay(int actorId)
+    public void RemoveDisplay(long actorId)
     {
         if (displayDict.TryGetValue(actorId, out var display))
         {
-            displayBatchManager.RemoveDisplay(display);
+            DisplayBatchManager.Instance.RemoveDisplay(display);
             displays.Remove(display);
         }
     }
 
-    public void FixedUpdate()
-    {
-        foreach (var display in displays) 
-        {
-            display.FixedUpdate();
-        }
-        displayBatchManager.FixedUpdate();
-    }
-
-    public void Dispose()
-    {
-        displayBatchManager.Dispose();
-    }
-
     public void Update()
     {
-        displayBatchManager.Update();
+        foreach (var display in displays)
+        {
+            display.Update();
+        }
     }
 
 }

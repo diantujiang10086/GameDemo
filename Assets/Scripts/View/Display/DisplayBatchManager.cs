@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DisplayBatchManager : IDisposable
+public class DisplayBatchManager : Singleton<DisplayBatchManager>, IFixedUpdate, IUpdate
 {
     public const int maxInstance = 10000;
     public Dictionary<int, DisplayBatch> batchs = new Dictionary<int, DisplayBatch>();
 
-    public Display CreateDisplay(int materialId)
+    public Display CreateDisplay(int displayId)
     {
-        if (!batchs.TryGetValue(materialId, out var batchDisplay))
+        if (!batchs.TryGetValue(displayId, out var batchDisplay))
         {
-            var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
-            if (materialConfig.materialType == MaterialType.Sprine)
+            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(displayId);
+            if (displayConfig == null)
+                return default;
+            if (displayConfig.materialType == MaterialType.Sprine)
             {
-                batchDisplay = new DisplayBatch(materialId, ViewHelper.MakeQuad(), maxInstance);
+                batchDisplay = new DisplayBatch(displayId, ViewHelper.MakeQuad(), maxInstance);
             }
-            else if (materialConfig.materialType == MaterialType.Atlas)
+            else if (displayConfig.materialType == MaterialType.Atlas)
             {
-                batchDisplay = new AtlasDisplayBatch(materialId, ViewHelper.MakeQuad(), maxInstance);
+                batchDisplay = new AtlasDisplayBatch(displayId, ViewHelper.MakeQuad(), maxInstance);
             }
-            batchs[materialId] = batchDisplay;
+            batchs[displayId] = batchDisplay;
         }
         var display = batchDisplay.CreateDisplay();
-        display.batchId = materialId;
+        display.batchId = displayId;
         return display;
     }
 
@@ -34,23 +36,23 @@ public class DisplayBatchManager : IDisposable
         }
     }
 
-    public void FixedUpdate()
+    void IFixedUpdate.FixedUpdate(float elaspedTime)
     {
-        foreach (var display in batchs.Values)
+        foreach (var batch in batchs.Values)
         {
-            display.FixedUpdate();
+            batch.FillData();
         }
     }
 
-    public void Update()
+    void IUpdate.Update()
     {
-        foreach (var display in batchs.Values)
+        foreach (var batch in batchs.Values)
         {
-            display.Update();
+            batch.Update();
         }
     }
 
-    public void Dispose()
+    protected override void Destroy()
     {
         foreach (var display in batchs.Values)
         {

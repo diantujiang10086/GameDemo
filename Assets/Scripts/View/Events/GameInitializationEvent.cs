@@ -6,7 +6,9 @@ public class GameInitializationEvent : AEvent<GameInitialization>
     protected override void Run(GameInitialization a)
     {
         Log.log = new UnityLog();
-        ResourceManager.resourceLoader = new UnityResourceLoader();
-        new GameObject("GameBehaviour").AddComponent<GameBehaviour>();
+        World.Instance.AddSigleton<DisplayManager>();
+        World.Instance.AddSigleton<DisplayBatchManager>();
+        ResourceManager.Instance.resourceLoader = new UnityResourceLoader();
+        new GameObject("GameManager").AddComponent<GameManager>();
     }
 }

@@ -6,7 +6,7 @@ using System;
 public class DisplayBatch : IDisposable
 {
     protected int maxInstance;
-    protected int materialId;
+    protected int displayId;
     protected Material material;
     private Pool<Display> displays;
     protected BatchDataBuffer batchDataBuffer;
@@ -22,12 +22,12 @@ public class DisplayBatch : IDisposable
     public NativeArray<float3> Scales => scales;
     public NativeArray<quaternion> Rotations => rotations;
 
-    public DisplayBatch(int materialId, Mesh mesh, int maxInstance)
+    public DisplayBatch(int displayId, Mesh mesh, int maxInstance)
     {
         this.maxInstance = maxInstance;
-        this.materialId = materialId;
-        var materialConfig = ConfigManager.Instance.GetConfig<MaterialConfig>(materialId);
-        material = ResourceManager.Load<Material>(materialConfig.materialPath);
+        this.displayId = displayId;
+        var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(displayId);
+        material = ResourceManager.Instance.Load<Material>(displayConfig.materialPath);
 
         displays = new Pool<Display>(maxInstance);
         positions = new NativeArray<float3>(maxInstance, Allocator.Persistent);
@@ -56,7 +56,7 @@ public class DisplayBatch : IDisposable
         }
     }
 
-    public void FixedUpdate()
+    public void FillData()
     {
         batchDataBuffer.Complete();
 

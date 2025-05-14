@@ -94,7 +94,7 @@ public class ConvertHelper
         if (conversionType.Name == "float2")
         {
             var array = value.Split('#');
-            return value.Split('#').Length switch
+            return array.Length switch
             {
                 1 => new float2(float.Parse(array[0]), 0),
                 2 => new float2(float.Parse(array[0]), float.Parse(array[1])),
@@ -104,7 +104,7 @@ public class ConvertHelper
         else if (conversionType.Name == "float3")
         {
             var array = value.Split('#');
-            return value.Split('#').Length switch
+            return array.Length switch
             {
                 1 => new float3(float.Parse(array[0]), 0, 0),
                 2 => new float3(float.Parse(array[0]), float.Parse(array[1]), 0),
@@ -115,7 +115,7 @@ public class ConvertHelper
         else if (conversionType.Name == "int2")
         {
             var array = value.Split('#');
-            return value.Split('#').Length switch
+            return array.Length switch
             {
                 1 => new int2(int.Parse(array[0]), 0),
                 2 => new int2(int.Parse(array[0]), int.Parse(array[1])),
@@ -125,7 +125,7 @@ public class ConvertHelper
         else if (conversionType.Name == "int3")
         {
             var array = value.Split('#');
-            return value.Split('#').Length switch
+            return array.Length switch
             {
                 1 => new int3(int.Parse(array[0]), 0, 0),
                 2 => new int3(int.Parse(array[0]), int.Parse(array[1]), 0),
@@ -136,7 +136,7 @@ public class ConvertHelper
         else if (conversionType.Name == "quaternion")
         {
             var array = value.Split('#');
-            return value.Split('#').Length switch
+            return array.Length switch
             {
                 1 => quaternion.Euler(float.Parse(array[0]), 0, 0),
                 2 => quaternion.Euler(float.Parse(array[0]), float.Parse(array[1]), 0),
