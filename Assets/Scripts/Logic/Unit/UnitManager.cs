@@ -8,49 +8,36 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         units = World.Instance.MainScene.AddChild<Entity>();
     }
 
-    public Unit Create(int configId, float3 position)
+    public Unit CreateActor(int configId, float3 position)
     {
-        return Create(configId, position, new float3(1, 1, 1), default);
+        return CreateActor(configId, position, new float3(1, 1, 1), default);
     }
 
-    public Unit Create(int configId, float3 position, float3 scale, float3 rotation)
+    public Unit CreateActor(int configId, float3 position, float3 scale, float3 rotation)
     {
         var config = ConfigManager.Instance.GetConfig<UnitConfig>(configId);
         if (config == null)
             return default;
 
-        Unit unit = units.AddChild<Unit, IConfig>(config);
-
-        unit.position = position + config.position;
-        unit.scale = scale + config.scale;
-        unit.rotation = quaternion.Euler(rotation + config.rotation);
-
-        if (config.displayId != 0)
-        {
-            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(config.displayId);
-            if (displayConfig != null)
-            {
-                unit.AddComponent<DisplayComponent, DisplayConfig>(displayConfig);
-            }
-        }
-
+        var unit = CreateUnit(config, config.displayId, position, scale, rotation);
+        
         if (config.moveSpeed > 0)
         {
-            unit.AddComponent<MoveComponent>();
+            unit.AddComponent<MoveComponent,float,float>(config.moveSpeed, config.rotationSpeed);
         }
 
+        var skillManager = unit.AddComponent<SkillManager>();
         if(config.skills != null)
         {
-            var skillManager = unit.AddComponent<SkillManager>();
             foreach (var skillId in config.skills)
             {
                 skillManager.AddSkill(skillId);
             }
         }
 
+        var buffManager = unit.AddComponent<BuffManager>();
         if(config.buffs != null)
         {
-            var buffManager = unit.AddComponent<BuffManager>();
             foreach (var buffId in config.buffs)
             {
                 buffManager.AddBuff(buffId);
@@ -67,19 +54,8 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         if (config == null)
             return default;
 
-        Unit unit = units.AddChild<Unit, IConfig>(config);
-        unit.position = position + config.position;
-        unit.scale = scale + config.scale;
-        unit.rotation = quaternion.Euler(rotation + config.rotation);
-
-        if(config.displayId != 0)
-        {
-            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(config.displayId);
-            if (displayConfig != null)
-            {
-                unit.AddComponent<DisplayComponent, DisplayConfig>(displayConfig);
-            }
-        }
+        var unit = CreateUnit(config, config.displayId, position, scale, rotation);
+        EventSystem.Instance.Publish(new UnitCreate { unitId = unit.InstanceId });
         return unit;
     }
 
@@ -91,5 +67,23 @@ public class UnitManager : Singleton<UnitManager>, IAwake
     public void RemoveUnit(long instanceId)
     {
         units.RemoveChild(instanceId);
+    }
+
+    private Unit CreateUnit<T>(T config, int displayId, float3 position, float3 scale, float3 rotation) where T: IConfig
+    {
+        Unit unit = units.AddChild<Unit, T>(config);
+        unit.position = position;
+        unit.scale = scale;
+        unit.rotation = quaternion.Euler(math.radians(rotation));
+
+        if (displayId != 0)
+        {
+            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(displayId);
+            if (displayConfig != null)
+            {
+                unit.AddComponent<DisplayComponent, DisplayConfig>(displayConfig);
+            }
+        }
+        return unit;
     }
 }

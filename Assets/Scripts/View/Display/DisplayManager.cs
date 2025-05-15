@@ -7,9 +7,7 @@ public class DisplayManager : Singleton<DisplayManager>, IUpdate
 
     public void CreateDisplay(DisplayComponent displayComponent)
     {
-        var config = displayComponent.GetParent<Unit>().Config;
-        
-        var display = DisplayBatchManager.Instance.CreateDisplay(config.displayId);
+        var display = DisplayBatchManager.Instance.CreateDisplay(displayComponent.DisplayId);
         if (display == null)
             return;
         display.SetDisplayComponent(displayComponent);

@@ -15,6 +15,10 @@ public static class Entry
 
         World.Instance.AddSigleton<UnitManager>();
         World.Instance.AddSigleton<ConfigManager>();
+        World.Instance.AddSigleton<BulletManager>();
+        World.Instance.AddSigleton<BuffAgentManager>();
+        World.Instance.AddSigleton<BulletMoveAgentManager>();
+        World.Instance.AddSigleton<SkillTemplateAgentManager>();
 
         EventSystem.Instance.Publish(default(GameStart));
     }

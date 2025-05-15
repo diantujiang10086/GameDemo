@@ -30,7 +30,8 @@ public class BuffManager : Entity, IAwake
         var buff = BuffAgentManager.Instance.GetBuff(config.templateAgent);
         if (buff == null)
             return false;
-        var buffComponent = AddChild<BuffComponent, Unit, BuffConfig, BaseBuff>(owner, config, buff);
+        var buffComponent = AddChild<BuffComponent, Unit, BuffConfig>(owner, config);
+        buffComponent.Initialize(buff, args);
         buffs[buffId] = buffComponent;
         return true;
     }

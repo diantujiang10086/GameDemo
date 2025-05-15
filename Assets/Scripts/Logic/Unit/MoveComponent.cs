@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-public class MoveComponent : Entity, IAwake, IFixedUpdate
+public class MoveComponent : Entity, IAwake<float, float>, IFixedUpdate
 {
     private Unit m_unit;
     private bool isMoveing;
@@ -52,8 +52,12 @@ public class MoveComponent : Entity, IAwake, IFixedUpdate
     public void Awake()
     {
         m_unit = GetParent<Unit>();
-        m_moveSpeed = m_unit.Config.moveSpeed;
-        m_rotationSpeed = m_unit.Config.rotationSpeed;
+    }
+
+    public void Awake(float moveSpeed, float rotationSpeed)
+    {
+        m_moveSpeed = moveSpeed;
+        m_rotationSpeed = rotationSpeed;
     }
 
     public void FixedUpdate(float elaspedTime)

@@ -10,6 +10,13 @@ public class ConvertHelper
 
     public static object ChangeType(string value, Type conversionType)
     {
+        if (conversionType == typeof(string))
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+            return value;
+        }
+        
         if (string.IsNullOrEmpty(value))
             return default;
 
@@ -25,9 +32,6 @@ public class ConvertHelper
             }
         }
         
-        if (conversionType == typeof(string))
-            return value;
-
         if (conversionType.IsArray)
         {
             string[] array1 = value.Split('#');

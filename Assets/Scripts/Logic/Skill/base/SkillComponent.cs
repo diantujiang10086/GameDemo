@@ -2,24 +2,22 @@ public class SkillComponent : Entity, IAwake<Unit, SkillConfig>, IFixedUpdate
 {
     private Unit caster;
     private SkillConfig skillConfig;
-    private float startTime = -999;
-    private float cdTime;
+    private float cdEndTime;
     private BaseSkill skill;
 
-    public bool IsCD => TimeSystem.Instance.GameTime - startTime < cdTime;
+    public bool IsCD => TimeSystem.Instance.GameTime < cdEndTime;
 
     public void Awake(Unit caster,  SkillConfig config)
     {
         this.caster = caster;
         this.skillConfig = config;
-        cdTime = config.cdTime;
     }
 
     public void Execute(SkillArguments skillArguments)
     {
         skill = SkillTemplateAgentManager.Instance.GetSkillAgnet(skillConfig.templateAgent);
         skill.Initialize(caster, skillConfig, skillArguments);
-        startTime = TimeSystem.Instance.GameTime;
+        cdEndTime = TimeSystem.Instance.GameTime + skillConfig.cdTime;
     }
 
     public void FixedUpdate(float elaspedTime)

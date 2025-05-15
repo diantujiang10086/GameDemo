@@ -12,7 +12,7 @@
             return false;
 
         var bullet = UnitManager.Instance.CreateBullet(bulletId, bulletArguments.position, bulletArguments.scale, bulletArguments.roation);
-        bullet.AddComponent<BulletComponent, Unit>(bulletArguments.owner);
+        bullet.AddComponent<BulletComponent, BulletConfig, BulletArguments>(config, bulletArguments);
 
         return true;
     }

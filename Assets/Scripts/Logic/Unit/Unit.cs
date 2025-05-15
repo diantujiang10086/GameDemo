@@ -1,8 +1,7 @@
 using Unity.Mathematics;
 
-public class Unit : Entity , IAwake<UnitConfig>, IDestory
+public class Unit : Entity, IDestory
 {
-    private UnitConfig config;
     private float3 m_position;
     private float3 m_scale = new float3(1, 1, 1);
     private quaternion m_rotation;
@@ -36,11 +35,6 @@ public class Unit : Entity , IAwake<UnitConfig>, IDestory
         }
     }
 
-    public UnitConfig Config
-    {
-        get => config;
-    }
-
     public void MoveTo(float3 value)
     {
         m_position = value;
@@ -51,11 +45,6 @@ public class Unit : Entity , IAwake<UnitConfig>, IDestory
     {
         m_rotation = value;
         EventSystem.Instance.Publish(new UnitLookAt { unitId = InstanceId, value = value });
-    }
-
-    public void Awake(UnitConfig config)
-    {
-        this.config = config;
     }
 
     void IDestory.Destory()

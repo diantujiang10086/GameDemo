@@ -78,6 +78,54 @@ public class Entity : DisposeObject
         Components[typeof(T)] = component;
         return component as T;
     }
+    public T AddComponent<T, A, B>(A a, B b) where T : Entity
+    {
+        if (Components.TryGetValue(typeof(T), out var component))
+        {
+            return component as T;
+        }
+
+        component = Create(typeof(T));
+        component.isComponent = true;
+        component.Parent = this;
+        component.InstanceId = this.InstanceId;
+        (component as IAwake<A, B>)?.Awake(a, b);
+        RegisterSystem();
+        Components[typeof(T)] = component;
+        return component as T;
+    }
+    public T AddComponent<T, A, B, C>(A a, B b, C c) where T : Entity
+    {
+        if (Components.TryGetValue(typeof(T), out var component))
+        {
+            return component as T;
+        }
+
+        component = Create(typeof(T));
+        component.isComponent = true;
+        component.Parent = this;
+        component.InstanceId = this.InstanceId;
+        (component as IAwake<A, B, C>)?.Awake(a, b, c);
+        RegisterSystem();
+        Components[typeof(T)] = component;
+        return component as T;
+    }
+    public T AddComponent<T, A, B, C, D>(A a, B b, C c, D d) where T : Entity
+    {
+        if (Components.TryGetValue(typeof(T), out var component))
+        {
+            return component as T;
+        }
+
+        component = Create(typeof(T));
+        component.isComponent = true;
+        component.Parent = this;
+        component.InstanceId = this.InstanceId;
+        (component as IAwake<A, B, C, D>)?.Awake(a, b, c, d);
+        RegisterSystem();
+        Components[typeof(T)] = component;
+        return component as T;
+    }
 
     public T GetComponent<T>() where T : Entity
     {
