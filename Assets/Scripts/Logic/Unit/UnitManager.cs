@@ -19,7 +19,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         if (config == null)
             return default;
 
-        var unit = CreateUnit(config, config.displayId, position, scale, rotation);
+        var unit = CreateUnit(config, config.displayId, config.position + position, config.scale + scale, config.rotation + rotation);
         
         if (config.moveSpeed > 0)
         {
@@ -54,7 +54,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         if (config == null)
             return default;
 
-        var unit = CreateUnit(config, config.displayId, position, scale, rotation);
+        var unit = CreateUnit(config, config.displayId, config.position + position, config.scale+ scale, config.rotation + rotation);
         EventSystem.Instance.Publish(new UnitCreate { unitId = unit.InstanceId });
         return unit;
     }

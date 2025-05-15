@@ -1,2 +1,2 @@
 id	moveAgent	position	scale	rotation	displayId	moveSpeed
-1	ForwardMove		1#1#1		2	10
+1	ForwardMove	0#0#1	1#1#1		2	10
