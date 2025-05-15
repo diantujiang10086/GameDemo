@@ -37,8 +37,6 @@ public class SkillManager : Entity, IAwake
         if (!skills.TryGetValue(skillId, out var skill))
             return false;
 
-        //消耗
-
         if (skill.IsCD)
             return false;
 

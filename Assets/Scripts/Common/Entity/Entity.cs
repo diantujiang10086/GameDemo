@@ -131,6 +131,14 @@ public class Entity : DisposeObject
         (child as IAwake<A, B>)?.Awake(a, b);
         return child as T;
     }
+    public T AddChild<T, A, B, C>(A a, B b, C c) where T : Entity
+    {
+        var child = Create(typeof(T));
+        child.Parent = this;
+        Childs[child.InstanceId] = child;
+        (child as IAwake<A, B, C>)?.Awake(a, b, c);
+        return child as T;
+    }
 
 
     public T GetChild<T>(long instanceId) where T : Entity
@@ -201,7 +209,7 @@ public class Entity : DisposeObject
 
         if (parent != null && !this.parent.IsDisposed)
         {
-            if(this.isComponent)
+            if (this.isComponent)
             {
                 parent.RemoveComponent(this);
             }

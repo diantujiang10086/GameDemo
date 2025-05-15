@@ -27,7 +27,7 @@ public class SkillComponent : Entity, IAwake<Unit, SkillConfig>, IFixedUpdate
         if (skill == null)
             return;
 
-        if (skill.IsDispose)
+        if (skill.IsDisposed)
         {
             skill = null;
             return;

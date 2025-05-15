@@ -1,11 +1,11 @@
 ﻿public class BaseSkill
 {
-    private bool isDispose = false;
-    private Unit caster;
-    private SkillConfig config;
-    private SkillArguments skillArguments;
+    private bool isDisposed = false;
+    protected Unit caster;
+    protected SkillConfig config;
+    protected SkillArguments skillArguments;
 
-    public bool IsDispose => isDispose;
+    public bool IsDisposed => isDisposed;
 
     public void Initialize(Unit caster, SkillConfig config, SkillArguments skillArguments)
     {
@@ -22,10 +22,10 @@
 
     public void Remove()
     {
-        if (isDispose)
+        if (isDisposed)
             return;
 
-        isDispose = true;
+        isDisposed = true;
     }
 
     protected virtual void OnInitialize()

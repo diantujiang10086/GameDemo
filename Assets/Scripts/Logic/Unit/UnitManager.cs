@@ -19,7 +19,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
         if (config == null)
             return default;
 
-        Unit unit = units.AddChild<Unit, UnitConfig>(config);
+        Unit unit = units.AddChild<Unit, IConfig>(config);
 
         unit.position = position + config.position;
         unit.scale = scale + config.scale;
@@ -48,7 +48,38 @@ public class UnitManager : Singleton<UnitManager>, IAwake
             }
         }
 
+        if(config.buffs != null)
+        {
+            var buffManager = unit.AddComponent<BuffManager>();
+            foreach (var buffId in config.buffs)
+            {
+                buffManager.AddBuff(buffId);
+            }
+        }
+
         EventSystem.Instance.Publish(new UnitCreate { unitId = unit.InstanceId });
+        return unit;
+    }
+
+    public Unit CreateBullet(int bulletId, float3 position, float3 scale, float3 rotation)
+    {
+        var config = ConfigManager.Instance.GetConfig<BulletConfig>(bulletId);
+        if (config == null)
+            return default;
+
+        Unit unit = units.AddChild<Unit, IConfig>(config);
+        unit.position = position + config.position;
+        unit.scale = scale + config.scale;
+        unit.rotation = quaternion.Euler(rotation + config.rotation);
+
+        if(config.displayId != 0)
+        {
+            var displayConfig = ConfigManager.Instance.GetConfig<DisplayConfig>(config.displayId);
+            if (displayConfig != null)
+            {
+                unit.AddComponent<DisplayComponent, DisplayConfig>(displayConfig);
+            }
+        }
         return unit;
     }
 
