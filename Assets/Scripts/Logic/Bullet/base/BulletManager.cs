@@ -13,7 +13,7 @@
 
         var bullet = UnitManager.Instance.CreateBullet(bulletId, bulletArguments.position, bulletArguments.scale, bulletArguments.roation);
         bullet.AddComponent<BulletComponent, BulletConfig, BulletArguments>(config, bulletArguments);
-
+        bullet.AddComponent<RegionDestoryComponent>();
         return true;
     }
 }
