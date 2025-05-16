@@ -22,24 +22,24 @@ public static class CollisionHelper
         {
             if(geometryB.colliderShape == ColliderShape.Circle)
             {
-                CircleAndCircleCollidersExtensions.Overlap(geometryA as CircleGeometry, geometryB as CircleGeometry);
+                return CircleAndCircleCollidersExtensions.Overlap(geometryA as CircleGeometry, geometryB as CircleGeometry);
             }
             else if (geometryB.colliderShape == ColliderShape.Box)
             {
-                BoxAndCircleCollidersExtensions.Overlap(geometryA as CircleGeometry, geometryB as BoxGeometry);
+                return BoxAndCircleCollidersExtensions.Overlap(geometryA as CircleGeometry, geometryB as BoxGeometry);
             }
         }
         if(geometryA.colliderShape == ColliderShape.Box)
         {
             if (geometryB.colliderShape == ColliderShape.Circle)
             {
-                BoxAndCircleCollidersExtensions.Overlap(geometryB as CircleGeometry, geometryA as BoxGeometry);
+                return BoxAndCircleCollidersExtensions.Overlap(geometryB as CircleGeometry, geometryA as BoxGeometry);
             }
             else if (geometryB.colliderShape == ColliderShape.Box)
             {
-                BoxAndBoxCollidersExtensions.Overlap(geometryB as BoxGeometry, geometryA as BoxGeometry);
+                return BoxAndBoxCollidersExtensions.Overlap(geometryB as BoxGeometry, geometryA as BoxGeometry);
             }
         }
-        return true;
+        return false;
     }
 }

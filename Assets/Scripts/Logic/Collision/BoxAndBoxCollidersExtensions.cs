@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 
-internal static class BoxAndBoxCollidersExtensions
+public static class BoxAndBoxCollidersExtensions
 {
     public struct CollisionAxis
     {

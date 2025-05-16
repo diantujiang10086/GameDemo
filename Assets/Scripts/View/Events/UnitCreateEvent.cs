@@ -11,5 +11,8 @@ public class UnitCreateEvent : AEvent<UnitCreate>
         {
             DisplayManager.Instance.CreateDisplay(displayComponent);
         }
+
+        new GameObject().AddComponent<BindUnit>().unit = unit;
+
     }
 }

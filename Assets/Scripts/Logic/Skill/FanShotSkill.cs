@@ -50,10 +50,9 @@ public class FanShotBulletSkill : BaseSkill
             layer = 2,
             colliderLayer = 1,
             offset = float2.zero,
-            radius = 1,
+            radius = 0.5f,
             size = float2.zero
         };
         bullet.AddComponent<Collision2DComponent, CollisionConfig>(config);
-
     }
 }

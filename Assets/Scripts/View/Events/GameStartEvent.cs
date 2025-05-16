@@ -1,12 +1,14 @@
 using Unity.Mathematics;
+using UnityEngine;
 
 [Event]
 public class GameStartEvent : AEvent<GameStart>
 {
     protected override void Run(GameStart a)
     {
-        //²âÊÔ
+        //æµ‹è¯•
         CreateUnit(1, new float3(0, -5, 0), 1, 2);
+        CreateUnit(4, new float3(5, 5, 0), 3, 4);
         CreateUnit(3, new float3(0, 5, 0), 3, 4);
     }
 
