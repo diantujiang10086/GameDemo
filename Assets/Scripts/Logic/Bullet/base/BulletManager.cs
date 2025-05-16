@@ -5,15 +5,15 @@
         
     }
 
-    public bool CreateBullet(int bulletId, BulletArguments bulletArguments)
+    public Unit CreateBullet(int bulletId, BulletArguments bulletArguments)
     {
         var config = ConfigManager.Instance.GetConfig<BulletConfig>(bulletId);
         if (config == null)
-            return false;
+            return default;
 
         var bullet = UnitManager.Instance.CreateBullet(bulletId, bulletArguments.position, bulletArguments.scale, bulletArguments.roation);
         bullet.AddComponent<BulletComponent, BulletConfig, BulletArguments>(config, bulletArguments);
         bullet.AddComponent<RegionDestoryComponent>();
-        return true;
+        return bullet;
     }
 }

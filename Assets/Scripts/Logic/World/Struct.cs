@@ -57,3 +57,30 @@ public struct UnitAnimationIndex
     public long unitId;
     public int value;
 }
+
+public struct CollisionEnter
+{
+    public long unitA;
+    public long unitB;
+}
+
+public struct CollisionStay
+{
+    public long unitA;
+    public long unitB;
+}
+
+public struct CollisionExit
+{
+    public long unitA;
+    public long unitB;
+}
+
+public struct ColliderDetectionCheckUpdate
+{
+    public long unitId;
+}
+public struct ColliderRegister
+{
+    public long unitId;
+}

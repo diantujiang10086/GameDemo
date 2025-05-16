@@ -19,6 +19,7 @@ public static class Entry
         World.Instance.AddSigleton<BuffAgentManager>();
         World.Instance.AddSigleton<BulletMoveAgentManager>();
         World.Instance.AddSigleton<SkillTemplateAgentManager>();
+        World.Instance.AddSigleton<SparseGridCollision2DManager>();
 
         EventSystem.Instance.Publish(default(GameStart));
     }

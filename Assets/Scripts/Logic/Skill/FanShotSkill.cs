@@ -34,12 +34,26 @@ public class FanShotBulletSkill : BaseSkill
 
     private void CreateBullet2D(int id, float3 origin, float angle, float size)
     {
-        BulletManager.Instance.CreateBullet(id, new BulletArguments
+        var bullet = BulletManager.Instance.CreateBullet(id, new BulletArguments
         {
             owner = caster,
             position = origin,
             scale = size,
             roation = new float3(0, 0, angle),
         });
+        //测试
+        var config = new CollisionConfig
+        {
+            isCollisionDestory = true,
+            isEnableColliderDetection = true,
+            colliderShape = ColliderShape.Circle,
+            layer = 2,
+            colliderLayer = 1,
+            offset = float2.zero,
+            radius = 1,
+            size = float2.zero
+        };
+        bullet.AddComponent<Collision2DComponent, CollisionConfig>(config);
+
     }
 }
