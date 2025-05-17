@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Collider2DSetting2DSettingEditor : Editor
 {
-    [MenuItem("Tools/Collider2DSetting")]
+    //[MenuItem("Tools/Collider2DSetting")]
     public static void Run()
     {
         var files = Directory.GetFiles("Assets/Resources/Colliders","*.prefab");

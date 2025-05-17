@@ -1,2 +1,2 @@
-id	moveAgent	position	scale	rotation	displayId	moveSpeed
-1	ForwardMove	0#0#1	1#1#1		2	10
+id	moveAgent	position	scale	rotation	displayId	moveSpeed	isAddCollider	isEnableColliderDetection	isCollisionDestory	layer	colliderLayer	colliderShape	offset	radius	size
+1	ForwardMove	0#0#1	1#1#1		2	10	True	True	True	2	1	Circle		0.5	

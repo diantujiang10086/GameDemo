@@ -1,5 +1,5 @@
-id	position	scale	rotation	displayId	moveSpeed	rotationSpeed	skills	buffs
-1		1#1#1		1	1	1		
-2		1#1#1		2	1	1		
-3		1#1#1		3	1	1	1	1
-4		1#1#1		4	1	1		
+id	position	scale	rotation	displayId	moveSpeed	rotationSpeed	skills	buffs	isAddCollider	isEnableColliderDetection	isCollisionDestory	layer	colliderLayer	colliderShape	offset	radius	size
+1		1#1#1		1	1	1			True	True	False	1	2	Circle		0.5	
+2		1#1#1		2	1	1											
+3		1#1#1		3	1	1	1	1	True	True	False	3	4	Circle		0.5	
+4		1#1#1		4	1	1			True	True	False	3	4	Circle		0.5	

@@ -20,7 +20,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
             return default;
 
         var unit = CreateUnit(config, config.displayId, config.position + position, config.scale + scale, config.rotation + rotation);
-        
+        AddCollider(unit, config);
         if (config.moveSpeed > 0)
         {
             unit.AddComponent<MoveComponent,float,float>(config.moveSpeed, config.rotationSpeed);
@@ -55,6 +55,7 @@ public class UnitManager : Singleton<UnitManager>, IAwake
             return default;
 
         var unit = CreateUnit(config, config.displayId, config.position + position, config.scale+ scale, config.rotation + rotation);
+        AddCollider(unit, config);
         EventSystem.Instance.Publish(new UnitCreate { unitId = unit.InstanceId });
         return unit;
     }
@@ -85,5 +86,37 @@ public class UnitManager : Singleton<UnitManager>, IAwake
             }
         }
         return unit;
+    }
+
+    private void AddCollider(Unit unit, UnitConfig unitConfig)
+    {
+        var config = new CollisionConfig
+        {
+            isCollisionDestory = unitConfig.isCollisionDestory,
+            isEnableColliderDetection = unitConfig.isEnableColliderDetection,
+            colliderShape = unitConfig.colliderShape,
+            layer = unitConfig.layer,
+            colliderLayer = unitConfig.colliderLayer,
+            offset = unitConfig.offset,
+            radius = unitConfig.radius,
+            size = unitConfig.size
+        };
+        unit.AddComponent<Collision2DComponent, CollisionConfig>(config);
+    }
+
+    private void AddCollider(Unit unit, BulletConfig unitConfig)
+    {
+        var config = new CollisionConfig
+        {
+            isCollisionDestory = unitConfig.isCollisionDestory,
+            isEnableColliderDetection = unitConfig.isEnableColliderDetection,
+            colliderShape = unitConfig.colliderShape,
+            layer = unitConfig.layer,
+            colliderLayer = unitConfig.colliderLayer,
+            offset = unitConfig.offset,
+            radius = unitConfig.radius,
+            size = unitConfig.size
+        };
+        unit.AddComponent<Collision2DComponent, CollisionConfig>(config);
     }
 }
