@@ -7,8 +7,9 @@ public enum ColliderShape : int
     Circle = 2,
 }
 
-public class CollisionConfig
+public class CollisionConfig : IConfig
 {
+    public int id;
     public bool isCollisionDestory;
     public bool isEnableColliderDetection;
     public ColliderShape colliderShape;
@@ -17,4 +18,10 @@ public class CollisionConfig
     public float2 offset;
     public float radius;
     public float2 size;
+}
+
+[Config(typeof(CollisionConfig))]
+public partial class CollisionConfigLoader : BaseLoader
+{
+
 }
